@@ -2,10 +2,10 @@
 SHELL = /bin/bash
 .SHELLFLAGS += -e
 
-KVERSION_SHORT ?= 3.16.0-7
+KVERSION_SHORT ?= 3.16.0-9
 KVERSION ?= $(KVERSION_SHORT)-amd64
-KERNEL_VERSION ?= 3.16.59
-KERNEL_SUBVERSION ?= 1
+KERNEL_VERSION ?= 3.16.68
+KERNEL_SUBVERSION ?= 2
 
 MAIN_TARGET = linux-headers-$(KVERSION_SHORT)-common_$(KERNEL_VERSION)-$(KERNEL_SUBVERSION)_amd64.deb
 DERIVED_TARGETS = linux-headers-$(KVERSION)_$(KERNEL_VERSION)-$(KERNEL_SUBVERSION)_amd64.deb \
@@ -45,7 +45,7 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	fakeroot make -f debian/rules.gen setup_amd64_none_amd64
 
 	# Applying patches and configuration changes
-	git diff
+	git --no-pager diff
 	git add debian/build/build_amd64_none_amd64/.config -f
 	git add debian/config.defines.dump -f
 	git commit -m "unmodified debian source"
