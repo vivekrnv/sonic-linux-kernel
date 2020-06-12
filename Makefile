@@ -94,7 +94,7 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 
 	# Optionally add/remove kernel options
 	if [ -f ../manage-config ]; then
-		../manage-config amd64
+		../manage-config $(CONFIGURED_ARCH)
 	fi
 
 	# Building a custom kernel from Debian kernel source
