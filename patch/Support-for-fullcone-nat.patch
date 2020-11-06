@@ -3,6 +3,33 @@ From: Kiran Kella <kiran.kella@broadcom.com>
 Date: Fri, 6 Sep 2019 20:54:19 -0700
 Subject: [PATCH] netfilter: nf_nat: Support fullcone NAT
 
+Changes done in the kernel to ensure 3-tuple uniqueness of the conntrack
+entries for the fullcone nat functionality.
+
+*   Hashlist is maintained for the 3-tuple unique keys (Protocol/Source
+    IP/Port) for all the conntrack entries.
+
+*   When NAT table rules are created with the fullcone option, the
+    SNAT/POSTROUTING stage ensures the ports from the pool are picked up in
+    such a way that the 3-tuple is uniquely assigned.
+
+*   In the DNAT/POSTROUTING stage, the fullcone behavior is ensured by checking
+    and reusing the 3-tuple for the Source IP/Port in the original direction.
+
+*   When the pool is exhausted of the 3-tuple assignments, the packets are
+    dropped, else, they will be going out of the router they being 5-tuple
+    unique (which is not intended).
+
+*   Passing fullcone option using iptables is part of another PR (in
+    sonic-buildimage repo).
+
+The kernel changes mentioned above are done to counter the challenges
+explained in the section *3.4.2.1 Handling NAT model mismatch between
+the ASIC and the Kernel* in the NAT HLD [1].
+
+[1]: https://github.com/kirankella/SONiC/blob/nat_doc_changes/doc/nat/nat_design_spec.md
+
+Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
 ---
  include/net/netfilter/nf_conntrack.h     |   3 +
  include/net/netfilter/nf_nat.h           |   6 +
