@@ -251,9 +251,9 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +		nf_ct_invert_tuplepr(&reply, tuple);
 +		/* Compare against the destination in the reply */
 +		if (same_reply_dst(ct, &reply) &&
-+	    		net_eq(net, nf_ct_net(ct)) &&
-+	    		nf_ct_zone_equal(ct, zone, IP_CT_DIR_ORIGINAL)) {
-+				return 1;
++		    net_eq(net, nf_ct_net(ct)) &&
++		    nf_ct_zone_equal(ct, zone, IP_CT_DIR_ORIGINAL)) {
++			return 1;
 +		}
 +	}
 +	return 0;
@@ -363,7 +363,7 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +			 * as a translated source for a given tuple, use that
 +			 */
 +			if (find_appropriate_dst(net, zone, l3proto, l4proto,
-+					 	orig_tuple, tuple)) {
++						orig_tuple, tuple)) {
 +				if (!nf_nat_used_tuple(tuple, ct)) {
 +					goto out;
 +				}
@@ -374,7 +374,7 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +			}
 +		}
 +	}
-+ 
++
  	/* 2) Select the least-used IP/proto combination in the given range */
  	*tuple = *orig_tuple;
 -	find_best_ips_proto(zone, tuple, range, ct, maniptype);
