@@ -30,6 +30,8 @@ the ASIC and the Kernel* in the NAT HLD [1].
 [1]: https://github.com/kirankella/SONiC/blob/nat_doc_changes/doc/nat/nat_design_spec.md
 
 Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
+[forward port to Linux v4.19, https://github.com/Azure/sonic-linux-kernel/pull/147]
+Signed-off-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
 ---
  include/net/netfilter/nf_conntrack.h     |   3 +
  include/net/netfilter/nf_nat.h           |   6 +
