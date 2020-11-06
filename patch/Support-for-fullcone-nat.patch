@@ -1,7 +1,7 @@
 From 67cc2bd46c7ad1431ddd1819cdfad6ecc08a7593 Mon Sep 17 00:00:00 2001
 From: Kiran Kella <kiran.kella@broadcom.com>
 Date: Fri, 6 Sep 2019 20:54:19 -0700
-Subject: [PATCH] Support for fullcone nat
+Subject: [PATCH] netfilter: nf_nat: Support fullcone NAT
 
 ---
  include/net/netfilter/nf_conntrack.h     |   3 +
