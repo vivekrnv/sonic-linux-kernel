@@ -60,3 +60,4 @@ CONFIG_MAX1363=m
 [armhf]
 
 
+[marvell-armhf]
