@@ -1,7 +1,4 @@
 # This series applies on GIT commit 18c5597832fcf6988111b05a9a1607ae148723c
-# (Marvell)
-# 0001-armhf-default-config-for-the-sonic-patches.patch
-# 0001-arm64-default-config-for-sonic-patches.patch
 
 driver-arista-net-tg3-dma-mask-4g-sb800.patch
 driver-arista-net-tg3-disallow-broadcom-default-mac.patch
@@ -39,11 +36,6 @@ e1000-Do-not-perform-reset-in-reset_task-if-we-are-a.patch
 macsec-Support-XPN-frame-handling-IEEE-802.1AEbw.patch
 netlink-add-NLA_MIN_LEN.patch
 macsec-Netlink-support-of-XPN-cipher-suites-IEEE-802.patch
-#
-# (Marvell)
-# 0042-Marvell-a385-Micron-4G-flash-support.patch
-# 0042-armhf-additional-configs.patch
-# 0042-armhf-proc-dma-kconfig.patch
 Support-for-fullcone-nat.patch
 driver-ixgbe-external-phy.patch
 #
