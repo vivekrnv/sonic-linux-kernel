@@ -1,6 +1,8 @@
 From 67cc2bd46c7ad1431ddd1819cdfad6ecc08a7593 Mon Sep 17 00:00:00 2001
+
 From: Kiran Kella <kiran.kella@broadcom.com>
 Date: Fri, 6 Sep 2019 20:54:19 -0700
+
 Subject: [PATCH] netfilter: nf_nat: Support fullcone NAT
 
 Changes done in the kernel to ensure 3-tuple uniqueness of the conntrack
@@ -33,44 +35,44 @@ Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
 [forward port to Linux v4.19, https://github.com/Azure/sonic-linux-kernel/pull/147]
 Signed-off-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
 ---
- include/net/netfilter/nf_conntrack.h     |   3 +
- include/net/netfilter/nf_nat.h           |   6 +
- include/net/netfilter/nf_nat_l4proto.h   |  12 +-
- include/uapi/linux/netfilter/nf_nat.h    |   1 +
- net/ipv4/netfilter/nf_nat_proto_gre.c    |   8 +-
- net/ipv4/netfilter/nf_nat_proto_icmp.c   |   6 +-
- net/ipv6/netfilter/nf_nat_proto_icmpv6.c |   5 +-
- net/netfilter/nf_nat_core.c              | 173 ++++++++++++++++++++---
- net/netfilter/nf_nat_proto_common.c      |  32 +++--
- net/netfilter/nf_nat_proto_dccp.c        |   6 +-
- net/netfilter/nf_nat_proto_sctp.c        |   6 +-
- net/netfilter/nf_nat_proto_tcp.c         |   6 +-
- net/netfilter/nf_nat_proto_udp.c         |  12 +-
- net/netfilter/nf_nat_proto_unknown.c     |   4 +-
+ include/net/netfilter/nf_conntrack.h     |    3 +
+ include/net/netfilter/nf_nat.h           |    6 +
+ include/net/netfilter/nf_nat_l4proto.h   |   12 +-
+ include/uapi/linux/netfilter/nf_nat.h    |    1
+ net/ipv4/netfilter/nf_nat_proto_gre.c    |    8 +
+ net/ipv4/netfilter/nf_nat_proto_icmp.c   |    6 +
+ net/ipv6/netfilter/nf_nat_proto_icmpv6.c |    5 +
+ net/netfilter/nf_nat_core.c              |  173 +++++++++++++++++++++++++++---
+ net/netfilter/nf_nat_proto_common.c      |   32 ++++--
+ net/netfilter/nf_nat_proto_dccp.c        |    6 +
+ net/netfilter/nf_nat_proto_sctp.c        |    6 +
+ net/netfilter/nf_nat_proto_tcp.c         |    6 +
+ net/netfilter/nf_nat_proto_udp.c         |   12 +-
+ net/netfilter/nf_nat_proto_unknown.c     |    4 -
  14 files changed, 220 insertions(+), 60 deletions(-)
 
 diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
-index f45141bdbb83..64b9293a31f6 100644
+index ac4d70aee..beee8670b 100644
 --- a/include/net/netfilter/nf_conntrack.h
 +++ b/include/net/netfilter/nf_conntrack.h
 @@ -84,6 +84,9 @@ struct nf_conn {
  #if IS_ENABLED(CONFIG_NF_NAT)
  	struct hlist_node	nat_bysource;
  #endif
-+        /* To optionally ensure 3-tuple uniqueness on the translated source */
-+        struct hlist_node       nat_by_manip_src;
++    /* To optionally ensure 3-tuple uniqueness on the translated source */
++    struct hlist_node       nat_by_manip_src;
 +
  	/* all members below initialized via memset */
- 	u8 __nfct_init_offset[0];
- 
+ 	struct { } __nfct_init_offset;
+
 diff --git a/include/net/netfilter/nf_nat.h b/include/net/netfilter/nf_nat.h
-index a17eb2f8d40e..7c3cc3c7b35f 100644
+index a17eb2f8d..7c3cc3c7b 100644
 --- a/include/net/netfilter/nf_nat.h
 +++ b/include/net/netfilter/nf_nat.h
 @@ -51,6 +51,12 @@ struct nf_conn_nat *nf_ct_nat_ext_add(struct nf_conn *ct);
  int nf_nat_used_tuple(const struct nf_conntrack_tuple *tuple,
  		      const struct nf_conn *ignored_conntrack);
- 
+
 +/* Is this 3-tuple already taken? (not by us)*/
 +int
 +nf_nat_used_3_tuple(const struct nf_conntrack_tuple *tuple,
@@ -81,7 +83,7 @@ index a17eb2f8d40e..7c3cc3c7b35f 100644
  {
  #if defined(CONFIG_NF_NAT) || defined(CONFIG_NF_NAT_MODULE)
 diff --git a/include/net/netfilter/nf_nat_l4proto.h b/include/net/netfilter/nf_nat_l4proto.h
-index b4d6b29bca62..fbcbb9ad9e4b 100644
+index b4d6b29bc..fbcbb9ad9 100644
 --- a/include/net/netfilter/nf_nat_l4proto.h
 +++ b/include/net/netfilter/nf_nat_l4proto.h
 @@ -32,7 +32,7 @@ struct nf_nat_l4proto {
@@ -96,7 +98,7 @@ index b4d6b29bca62..fbcbb9ad9e4b 100644
 @@ -70,11 +70,11 @@ bool nf_nat_l4proto_in_range(const struct nf_conntrack_tuple *tuple,
  			     const union nf_conntrack_man_proto *min,
  			     const union nf_conntrack_man_proto *max);
- 
+
 -void nf_nat_l4proto_unique_tuple(const struct nf_nat_l3proto *l3proto,
 -				 struct nf_conntrack_tuple *tuple,
 -				 const struct nf_nat_range2 *range,
@@ -107,11 +109,11 @@ index b4d6b29bca62..fbcbb9ad9e4b 100644
 +				const struct nf_nat_range2 *range,
 +				enum nf_nat_manip_type maniptype,
 +				const struct nf_conn *ct, u16 *rover);
- 
+
  int nf_nat_l4proto_nlattr_to_range(struct nlattr *tb[],
  				   struct nf_nat_range2 *range);
 diff --git a/include/uapi/linux/netfilter/nf_nat.h b/include/uapi/linux/netfilter/nf_nat.h
-index 4a95c0db14d4..1cda390e17c6 100644
+index 4a95c0db1..1cda390e1 100644
 --- a/include/uapi/linux/netfilter/nf_nat.h
 +++ b/include/uapi/linux/netfilter/nf_nat.h
 @@ -11,6 +11,7 @@
@@ -119,16 +121,16 @@ index 4a95c0db14d4..1cda390e17c6 100644
  #define NF_NAT_RANGE_PROTO_RANDOM_FULLY		(1 << 4)
  #define NF_NAT_RANGE_PROTO_OFFSET		(1 << 5)
 +#define NF_NAT_RANGE_FULLCONE		        (1 << 6)
- 
+
  #define NF_NAT_RANGE_PROTO_RANDOM_ALL		\
  	(NF_NAT_RANGE_PROTO_RANDOM | NF_NAT_RANGE_PROTO_RANDOM_FULLY)
 diff --git a/net/ipv4/netfilter/nf_nat_proto_gre.c b/net/ipv4/netfilter/nf_nat_proto_gre.c
-index 00fda6331ce5..d2ca4f6003ba 100644
+index 00fda6331..d2ca4f600 100644
 --- a/net/ipv4/netfilter/nf_nat_proto_gre.c
 +++ b/net/ipv4/netfilter/nf_nat_proto_gre.c
 @@ -38,7 +38,7 @@ MODULE_AUTHOR("Harald Welte <laforge@gnumonks.org>");
  MODULE_DESCRIPTION("Netfilter NAT protocol helper module for GRE");
- 
+
  /* generate unique tuple ... */
 -static void
 +static int
@@ -141,7 +143,7 @@ index 00fda6331ce5..d2ca4f6003ba 100644
  	if (!ct->master)
 -		return;
 +		return 0;
- 
+
  	if (maniptype == NF_NAT_MANIP_SRC)
  		keyptr = &tuple->src.u.gre.key;
 @@ -73,11 +73,11 @@ gre_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -151,21 +153,21 @@ index 00fda6331ce5..d2ca4f6003ba 100644
 -			return;
 +			return 1;
  	}
- 
+
  	pr_debug("%p: no NAT mapping\n", ct);
 -	return;
 +	return 0;
  }
- 
+
  /* manipulate a GRE packet according to maniptype */
 diff --git a/net/ipv4/netfilter/nf_nat_proto_icmp.c b/net/ipv4/netfilter/nf_nat_proto_icmp.c
-index 6d7cf1d79baf..403783cda503 100644
+index 6d7cf1d79..403783cda 100644
 --- a/net/ipv4/netfilter/nf_nat_proto_icmp.c
 +++ b/net/ipv4/netfilter/nf_nat_proto_icmp.c
 @@ -27,7 +27,7 @@ icmp_in_range(const struct nf_conntrack_tuple *tuple,
  	       ntohs(tuple->src.u.icmp.id) <= ntohs(max->icmp.id);
  }
- 
+
 -static void
 +static int
  icmp_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -181,16 +183,16 @@ index 6d7cf1d79baf..403783cda503 100644
 -	return;
 +	return 0;
  }
- 
+
  static bool
 diff --git a/net/ipv6/netfilter/nf_nat_proto_icmpv6.c b/net/ipv6/netfilter/nf_nat_proto_icmpv6.c
-index d9bf42ba44fa..7ff30a023f04 100644
+index d9bf42ba4..7ff30a023 100644
 --- a/net/ipv6/netfilter/nf_nat_proto_icmpv6.c
 +++ b/net/ipv6/netfilter/nf_nat_proto_icmpv6.c
 @@ -29,7 +29,7 @@ icmpv6_in_range(const struct nf_conntrack_tuple *tuple,
  	       ntohs(tuple->src.u.icmp.id) <= ntohs(max->icmp.id);
  }
- 
+
 -static void
 +static int
  icmpv6_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -205,24 +207,24 @@ index d9bf42ba44fa..7ff30a023f04 100644
  	}
 +	return 0;
  }
- 
+
  static bool
 diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 2268b10a9dcf..1b83427a7a68 100644
+index 2268b10a9..3ff1554ab 100644
 --- a/net/netfilter/nf_nat_core.c
 +++ b/net/netfilter/nf_nat_core.c
 @@ -43,6 +43,7 @@ static const struct nf_nat_l4proto __rcu **nf_nat_l4protos[NFPROTO_NUMPROTO]
  static unsigned int nat_net_id __read_mostly;
- 
+
  static struct hlist_head *nf_nat_bysource __read_mostly;
 +static struct hlist_head *nf_nat_by_manip_src __read_mostly;
  static unsigned int nf_nat_htable_size __read_mostly;
  static unsigned int nf_nat_hash_rnd __read_mostly;
- 
+
 @@ -155,6 +156,31 @@ hash_by_src(const struct net *n, const struct nf_conntrack_tuple *tuple)
  	return reciprocal_scale(hash, nf_nat_htable_size);
  }
- 
+
 +static inline unsigned int
 +hash_by_dst(const struct net *n, const struct nf_conntrack_tuple *tuple)
 +{
@@ -289,13 +291,13 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +}
  EXPORT_SYMBOL(nf_nat_used_tuple);
 +EXPORT_SYMBOL(nf_nat_used_3_tuple);
- 
+
  /* If we source map this tuple so reply looks like reply_tuple, will
   * that meet the constraints of range.
 @@ -237,6 +296,36 @@ find_appropriate_src(struct net *net,
  	return 0;
  }
- 
+
 +/* Only called for DST manip */
 +static int
 +find_appropriate_dst(struct net *net,
@@ -354,11 +356,11 @@ index 2268b10a9dcf..1b83427a7a68 100644
  	const struct nf_nat_l4proto *l4proto;
 +	struct nf_nat_range2 nat_range;
  	struct net *net = nf_ct_net(ct);
- 
+
 +        memcpy(&nat_range, range, sizeof(struct nf_nat_range2));
 +
  	zone = nf_ct_zone(ct);
- 
+
  	rcu_read_lock();
 @@ -345,48 +442,77 @@ get_unique_tuple(struct nf_conntrack_tuple *tuple,
  	 * manips not an issue.
@@ -381,7 +383,7 @@ index 2268b10a9dcf..1b83427a7a68 100644
  				goto out;
  		}
  	}
- 
+
 +	if (maniptype == NF_NAT_MANIP_DST) {
 +		if (nat_range.flags & NF_NAT_RANGE_FULLCONE) {
 +			/* Destination IP range does not apply when fullcone flag is set. */
@@ -408,11 +410,11 @@ index 2268b10a9dcf..1b83427a7a68 100644
  	*tuple = *orig_tuple;
 -	find_best_ips_proto(zone, tuple, range, ct, maniptype);
 +	find_best_ips_proto(zone, tuple, &nat_range, ct, maniptype);
- 
+
  	/* 3) The per-protocol part of the manip is made to map into
  	 * the range to make a unique tuple.
  	 */
- 
+
  	/* Only bother mapping if it's not already in range and unique */
 -	if (!(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
 -		if (range->flags & NF_NAT_RANGE_PROTO_SPECIFIED) {
@@ -441,7 +443,7 @@ index 2268b10a9dcf..1b83427a7a68 100644
  			goto out;
  		}
  	}
- 
+
  	/* Last chance: get protocol to try to obtain unique tuple. */
 -	l4proto->unique_tuple(l3proto, tuple, range, maniptype, ct);
 +	return l4proto->unique_tuple(l3proto, tuple, &nat_range, maniptype, ct);
@@ -449,26 +451,26 @@ index 2268b10a9dcf..1b83427a7a68 100644
  	rcu_read_unlock();
 +	return 1;
  }
- 
+
  struct nf_conn_nat *nf_ct_nat_ext_add(struct nf_conn *ct)
 @@ -428,7 +554,9 @@ nf_nat_setup_info(struct nf_conn *ct,
  	nf_ct_invert_tuplepr(&curr_tuple,
  			     &ct->tuplehash[IP_CT_DIR_REPLY].tuple);
- 
+
 -	get_unique_tuple(&new_tuple, &curr_tuple, range, ct, maniptype);
 +	if (! get_unique_tuple(&new_tuple, &curr_tuple, range, ct, maniptype)) {
 +		return NF_DROP;
 +	}
- 
+
  	if (!nf_ct_tuple_equal(&new_tuple, &curr_tuple)) {
  		struct nf_conntrack_tuple reply;
 @@ -450,12 +578,16 @@ nf_nat_setup_info(struct nf_conn *ct,
- 
+
  	if (maniptype == NF_NAT_MANIP_SRC) {
  		unsigned int srchash;
 +		unsigned int manip_src_hash;
  		spinlock_t *lock;
- 
+
 +		manip_src_hash = hash_by_src(net, &new_tuple);
  		srchash = hash_by_src(net,
  				      &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple);
@@ -486,11 +488,11 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +	hlist_del_rcu(&ct->nat_by_manip_src);
  	spin_unlock_bh(&nf_nat_locks[h % CONNTRACK_LOCKS]);
  }
- 
+
 @@ -1055,9 +1188,14 @@ static int __init nf_nat_init(void)
  	if (!nf_nat_bysource)
  		return -ENOMEM;
- 
+
 +	nf_nat_by_manip_src = nf_ct_alloc_hashtable(&nf_nat_htable_size, 0);
 +	if (!nf_nat_by_manip_src)
 +		return -ENOMEM;
@@ -509,15 +511,15 @@ index 2268b10a9dcf..1b83427a7a68 100644
 +	kvfree(nf_nat_by_manip_src);
  	unregister_pernet_subsys(&nat_net_ops);
  }
- 
+
 diff --git a/net/netfilter/nf_nat_proto_common.c b/net/netfilter/nf_nat_proto_common.c
-index 5d849d835561..6ee918302a02 100644
+index 5d849d835..6ee918302 100644
 --- a/net/netfilter/nf_nat_proto_common.c
 +++ b/net/netfilter/nf_nat_proto_common.c
 @@ -34,12 +34,12 @@ bool nf_nat_l4proto_in_range(const struct nf_conntrack_tuple *tuple,
  }
  EXPORT_SYMBOL_GPL(nf_nat_l4proto_in_range);
- 
+
 -void nf_nat_l4proto_unique_tuple(const struct nf_nat_l3proto *l3proto,
 -				 struct nf_conntrack_tuple *tuple,
 -				 const struct nf_nat_range2 *range,
@@ -539,7 +541,7 @@ index 5d849d835561..6ee918302a02 100644
  		if (maniptype == NF_NAT_MANIP_DST)
 -			return;
 +			return 0;
- 
+
  		if (ntohs(*portptr) < 1024) {
  			/* Loose convention: >> 512 is credential passing */
 @@ -87,17 +87,27 @@ void nf_nat_l4proto_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -551,7 +553,7 @@ index 5d849d835561..6ee918302a02 100644
 +			off++;
 +		}
  	}
- 
+
 -	for (i = 0; ; ++off) {
 +	for (i = 0; (i != range_size); ++i, ++off) {
  		*portptr = htons(min + off % range_size);
@@ -573,15 +575,15 @@ index 5d849d835561..6ee918302a02 100644
 +	return 0;
  }
  EXPORT_SYMBOL_GPL(nf_nat_l4proto_unique_tuple);
- 
+
 diff --git a/net/netfilter/nf_nat_proto_dccp.c b/net/netfilter/nf_nat_proto_dccp.c
-index 67ea0d83aa5a..68ef70bb55df 100644
+index 67ea0d83a..68ef70bb5 100644
 --- a/net/netfilter/nf_nat_proto_dccp.c
 +++ b/net/netfilter/nf_nat_proto_dccp.c
 @@ -20,15 +20,15 @@
- 
+
  static u_int16_t dccp_port_rover;
- 
+
 -static void
 +static int
  dccp_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -595,16 +597,16 @@ index 67ea0d83aa5a..68ef70bb55df 100644
 +	return  nf_nat_l4proto_unique_tuple(l3proto, tuple, range, maniptype, ct,
 +					    &dccp_port_rover);
  }
- 
+
  static bool
 diff --git a/net/netfilter/nf_nat_proto_sctp.c b/net/netfilter/nf_nat_proto_sctp.c
-index 1c5d9b65fbba..a9d9070c36c8 100644
+index 1c5d9b65f..a9d9070c3 100644
 --- a/net/netfilter/nf_nat_proto_sctp.c
 +++ b/net/netfilter/nf_nat_proto_sctp.c
 @@ -14,15 +14,15 @@
- 
+
  static u_int16_t nf_sctp_port_rover;
- 
+
 -static void
 +static int
  sctp_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -618,16 +620,16 @@ index 1c5d9b65fbba..a9d9070c36c8 100644
 +	return nf_nat_l4proto_unique_tuple(l3proto, tuple, range, maniptype, ct,
 +					    &nf_sctp_port_rover);
  }
- 
+
  static bool
 diff --git a/net/netfilter/nf_nat_proto_tcp.c b/net/netfilter/nf_nat_proto_tcp.c
-index f15fcd475f98..1b039055421f 100644
+index f15fcd475..1b0390554 100644
 --- a/net/netfilter/nf_nat_proto_tcp.c
 +++ b/net/netfilter/nf_nat_proto_tcp.c
 @@ -20,15 +20,15 @@
- 
+
  static u16 tcp_port_rover;
- 
+
 -static void
 +static int
  tcp_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -641,16 +643,16 @@ index f15fcd475f98..1b039055421f 100644
 +	return nf_nat_l4proto_unique_tuple(l3proto, tuple, range, maniptype, ct,
 +					   &tcp_port_rover);
  }
- 
+
  static bool
 diff --git a/net/netfilter/nf_nat_proto_udp.c b/net/netfilter/nf_nat_proto_udp.c
-index 5790f70a83b2..0b26bb52aef6 100644
+index d85c31c24..ecdcdb2bf 100644
 --- a/net/netfilter/nf_nat_proto_udp.c
 +++ b/net/netfilter/nf_nat_proto_udp.c
 @@ -19,15 +19,15 @@
- 
+
  static u16 udp_port_rover;
- 
+
 -static void
 +static int
  udp_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -664,12 +666,12 @@ index 5790f70a83b2..0b26bb52aef6 100644
 +	return nf_nat_l4proto_unique_tuple(l3proto, tuple, range, maniptype, ct,
 +					   &udp_port_rover);
  }
- 
+
  static void
-@@ -97,15 +97,15 @@ static bool udplite_manip_pkt(struct sk_buff *skb,
+@@ -96,15 +96,15 @@ static bool udplite_manip_pkt(struct sk_buff *skb,
  	return true;
  }
- 
+
 -static void
 +static int
  udplite_unique_tuple(const struct nf_nat_l3proto *l3proto,
@@ -683,16 +685,16 @@ index 5790f70a83b2..0b26bb52aef6 100644
 +	return nf_nat_l4proto_unique_tuple(l3proto, tuple, range, maniptype, ct,
 +					   &udplite_port_rover);
  }
- 
+
  const struct nf_nat_l4proto nf_nat_l4proto_udplite = {
 diff --git a/net/netfilter/nf_nat_proto_unknown.c b/net/netfilter/nf_nat_proto_unknown.c
-index c5db3e251232..377a2938cd79 100644
+index c5db3e251..377a2938c 100644
 --- a/net/netfilter/nf_nat_proto_unknown.c
 +++ b/net/netfilter/nf_nat_proto_unknown.c
 @@ -25,7 +25,7 @@ static bool unknown_in_range(const struct nf_conntrack_tuple *tuple,
  	return true;
  }
- 
+
 -static void unknown_unique_tuple(const struct nf_nat_l3proto *l3proto,
 +static int unknown_unique_tuple(const struct nf_nat_l3proto *l3proto,
  				 struct nf_conntrack_tuple *tuple,
@@ -705,5 +707,5 @@ index c5db3e251232..377a2938cd79 100644
 -	return;
 +	return 0;
  }
- 
+
  static bool
