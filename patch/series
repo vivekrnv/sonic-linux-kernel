@@ -86,6 +86,8 @@ driver-ixgbe-external-phy.patch
 #0031-backport-nvme-Add-hardware-monitoring-support.patch
 #0032-platform-mellanox-mlxreg-hotplug-Use-capability-regi.patch
 
+0001-net-prefer-socket-bound-to-interface-when-not-in-VRF.patch
+
 #
 # Marvell platform patches for 4.19
 armhf_secondary_boot_online.patch
