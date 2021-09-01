@@ -88,6 +88,7 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 
 # Cisco patches for 4.19 kernel
 cisco-mtd-part.patch
+cisco-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
 #
 # Marvell platform patches for 4.19
