@@ -11,10 +11,10 @@ From: Cumulus Networks <support@cumulusnetworks.com>
  create mode 100644 drivers/hwmon/pmbus/dni_dps460.c
 
 diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index a82018aaf..720945848 100644
+index a25faf69f..3fd57f62a 100644
 --- a/drivers/hwmon/pmbus/Kconfig
 +++ b/drivers/hwmon/pmbus/Kconfig
-@@ -135,6 +135,16 @@ config SENSORS_MAX34440
+@@ -202,6 +202,16 @@ config SENSORS_MAX34440
  	  This driver can also be built as a module. If so, the module will
  	  be called max34440.
  
@@ -32,10 +32,10 @@ index a82018aaf..720945848 100644
  	tristate "Maxim MAX8688"
  	help
 diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index ea0e39518..c67f5a290 100644
+index 4c97ad0bd..6cf17031a 100644
 --- a/drivers/hwmon/pmbus/Makefile
 +++ b/drivers/hwmon/pmbus/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_SENSORS_MAX16064)	+= max16064.o
+@@ -23,6 +23,7 @@ obj-$(CONFIG_SENSORS_MAX20730)	+= max20730.o
  obj-$(CONFIG_SENSORS_MAX20751)	+= max20751.o
  obj-$(CONFIG_SENSORS_MAX31785)	+= max31785.o
  obj-$(CONFIG_SENSORS_MAX34440)	+= max34440.o
@@ -45,7 +45,7 @@ index ea0e39518..c67f5a290 100644
  obj-$(CONFIG_SENSORS_PXE1610)	+= pxe1610.o
 diff --git a/drivers/hwmon/pmbus/dni_dps460.c b/drivers/hwmon/pmbus/dni_dps460.c
 new file mode 100644
-index 000000000..ad29134c4
+index 000000000..ddd4aae54
 --- /dev/null
 +++ b/drivers/hwmon/pmbus/dni_dps460.c
 @@ -0,0 +1,253 @@

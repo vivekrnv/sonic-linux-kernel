@@ -15,7 +15,7 @@ Signed-off-by: Don Bollinger <don@thebollingers.org>
  1 file changed, 56 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/misc/eeprom/optoe.c b/drivers/misc/eeprom/optoe.c
-index c22b92a29..16287fdc5 100644
+index f31c409ed..6b80397b8 100644
 --- a/drivers/misc/eeprom/optoe.c
 +++ b/drivers/misc/eeprom/optoe.c
 @@ -97,6 +97,13 @@

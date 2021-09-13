@@ -1,15 +1,16 @@
 From 0a3a6f30eb6ea96a1642a3ad75d2de87a1448fb3 Mon Sep 17 00:00:00 2001
+
 From: Arun Saravanan Balachandran <Arun_Saravanan_Balac@dell.com>
-Date: Thu, 11 Feb 2021 09:15:41 +0000
+
 Subject: [PATCH] Add attributes to retrieve PMBus status command codes
 
 Signed-off-by: Arun Saravanan Balachandran <Arun_Saravanan_Balac@dell.com>
 ---
- drivers/hwmon/pmbus/dni_dps460.c | 152 +++++++++++++++++++++++++++++++++++++++
+ drivers/hwmon/pmbus/dni_dps460.c |  152 ++++++++++++++++++++++++++++++++++++++
  1 file changed, 152 insertions(+)
 
 diff --git a/drivers/hwmon/pmbus/dni_dps460.c b/drivers/hwmon/pmbus/dni_dps460.c
-index d314c1f..313165a 100644
+index e7c9c8bfd..4e96a430b 100644
 --- a/drivers/hwmon/pmbus/dni_dps460.c
 +++ b/drivers/hwmon/pmbus/dni_dps460.c
 @@ -166,13 +166,165 @@ static ssize_t set_pec(struct device *dev, struct device_attribute *dummy,
@@ -178,6 +179,3 @@ index d314c1f..313165a 100644
  	NULL
  };
  static struct attribute_group dni_dps460_attr_grp = {
--- 
-2.7.4
-

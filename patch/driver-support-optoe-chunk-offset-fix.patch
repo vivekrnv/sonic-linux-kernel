@@ -10,7 +10,7 @@ Subject: [PATCH] Correct a panic inducing defect which is triggered on a read
  1 file changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/misc/eeprom/optoe.c b/drivers/misc/eeprom/optoe.c
-index b3064f02b..c22b92a29 100644
+index bb33be2a2..f31c409ed 100644
 --- a/drivers/misc/eeprom/optoe.c
 +++ b/drivers/misc/eeprom/optoe.c
 @@ -660,6 +660,7 @@ static ssize_t optoe_read_write(struct optoe_data *optoe,

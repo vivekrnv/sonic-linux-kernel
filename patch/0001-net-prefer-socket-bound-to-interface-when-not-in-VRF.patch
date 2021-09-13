@@ -1,6 +1,7 @@
 From 58d8e3907e98fcf8a35dfb867c12e40cd132b3c7 Mon Sep 17 00:00:00 2001
+
 From: Mike Manning <mmanning@vyatta.att-mail.com>
-Date: Mon, 6 Sep 2021 19:18:24 +0100
+
 Subject: [PATCH] net: prefer socket bound to interface when not in VRF
 
 The commit 6da5b0f027a8 ("net: ensure unbound datagram socket to be
@@ -22,14 +23,14 @@ Fixes: 6da5b0f027a8 ("net: ensure unbound datagram socket to be chosen when not 
 Fixes: e78190581aff ("net: ensure unbound stream socket to be chosen when not in a VRF")
 Signed-off-by: Mike Manning <mmanning@vyatta.att-mail.com>
 ---
- net/ipv4/inet_hashtables.c  | 4 +++-
- net/ipv4/udp.c              | 3 ++-
- net/ipv6/inet6_hashtables.c | 2 +-
- net/ipv6/udp.c              | 3 ++-
+ net/ipv4/inet_hashtables.c  |    4 +++-
+ net/ipv4/udp.c              |    3 ++-
+ net/ipv6/inet6_hashtables.c |    2 +-
+ net/ipv6/udp.c              |    3 ++-
  4 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 80aeaf9e6e16..bfb522e51346 100644
+index 45fb450b4..f3fd5c911 100644
 --- a/net/ipv4/inet_hashtables.c
 +++ b/net/ipv4/inet_hashtables.c
 @@ -242,8 +242,10 @@ static inline int compute_score(struct sock *sk, struct net *net,
@@ -45,7 +46,7 @@ index 80aeaf9e6e16..bfb522e51346 100644
  			score++;
  	}
 diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 8851c9463b4b..c6aedc674713 100644
+index fbb9a11fe..5e400162a 100644
 --- a/net/ipv4/udp.c
 +++ b/net/ipv4/udp.c
 @@ -390,7 +390,8 @@ static int compute_score(struct sock *sk, struct net *net,
@@ -59,7 +60,7 @@ index 8851c9463b4b..c6aedc674713 100644
  	if (READ_ONCE(sk->sk_incoming_cpu) == raw_smp_processor_id())
  		score++;
 diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-index 55c290d55605..67c9114835c8 100644
+index 55c290d55..67c911483 100644
 --- a/net/ipv6/inet6_hashtables.c
 +++ b/net/ipv6/inet6_hashtables.c
 @@ -106,7 +106,7 @@ static inline int compute_score(struct sock *sk, struct net *net,
@@ -72,7 +73,7 @@ index 55c290d55605..67c9114835c8 100644
  			score++;
  	}
 diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index ea53847b5b7e..c5267929825d 100644
+index e2de58d6c..743201668 100644
 --- a/net/ipv6/udp.c
 +++ b/net/ipv6/udp.c
 @@ -133,7 +133,8 @@ static int compute_score(struct sock *sk, struct net *net,
@@ -85,6 +86,3 @@ index ea53847b5b7e..c5267929825d 100644
  
  	if (READ_ONCE(sk->sk_incoming_cpu) == raw_smp_processor_id())
  		score++;
--- 
-2.20.1
-

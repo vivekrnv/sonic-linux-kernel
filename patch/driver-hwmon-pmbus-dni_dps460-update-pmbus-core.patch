@@ -1,6 +1,7 @@
 From 9cfc597034ffe58527ea5ce1799dfcbad770ea30 Mon Sep 17 00:00:00 2001
+
 From: Arun Saravanan Balachandran <Arun_Saravanan_Balac@dell.com>
-Date: Mon, 18 Jan 2021 09:00:44 +0000
+
 Subject: [PATCH] Update pmbus_data data structure to meet kernel
  implementation
 
@@ -10,11 +11,11 @@ Update this data structure to meet current kernel (4.19.x) implementation.
 
 Signed-off-by: Arun Saravanan Balachandran <Arun_Saravanan_Balac@dell.com>
 ---
- drivers/hwmon/pmbus/dni_dps460.c | 48 ++++++++++++++++++----------------------
+ drivers/hwmon/pmbus/dni_dps460.c |   48 +++++++++++++++++---------------------
  1 file changed, 22 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/hwmon/pmbus/dni_dps460.c b/drivers/hwmon/pmbus/dni_dps460.c
-index 2c67410..d314c1f 100644
+index ddd4aae54..e7c9c8bfd 100644
 --- a/drivers/hwmon/pmbus/dni_dps460.c
 +++ b/drivers/hwmon/pmbus/dni_dps460.c
 @@ -19,6 +19,7 @@
@@ -111,6 +112,3 @@ index 2c67410..d314c1f 100644
  
  	mutex_lock(&data->update_lock);
  
--- 
-2.7.4
-

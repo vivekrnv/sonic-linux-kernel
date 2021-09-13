@@ -1,4 +1,7 @@
 This patch releases prefecth memory resources assigned by the BIOS and
+
+From: Baptiste Covolato <b.covolato+github@gmail.com>
+
 reassigns them based on Arista platform specific values.
 
 The patch has no effect on non Arista devices. In order for it to take
@@ -9,17 +12,17 @@ Signed-off-by: yxiong@arista.com
 Signed-off-by: Vasiliy Khoruzhick <vasilykh@arista.com>
 Signed-off-by: Baptiste Covolato <baptiste@arista.com>
 ---
- arch/x86/pci/i386.c                         |    1 
- drivers/pci/Kconfig                         |    6 +
- drivers/pci/Makefile                        |    2 
- drivers/pci/hotplug/pciehp_pci.c            |    6 -
- drivers/pci/setup-prefmem.c                 |  323 +++++++++++++++++++++++++++
- include/linux/pci.h                         |   11 +
- 8 files changed, 352 insertions(+), 2 deletions(-)
+ arch/x86/pci/i386.c              |    1 
+ drivers/pci/Kconfig              |    6 +
+ drivers/pci/Makefile             |    2 
+ drivers/pci/hotplug/pciehp_pci.c |    6 +
+ drivers/pci/setup-prefmem.c      |  323 ++++++++++++++++++++++++++++++++++++++
+ include/linux/pci.h              |   11 +
+ 6 files changed, 348 insertions(+), 1 deletion(-)
  create mode 100644 drivers/pci/setup-prefmem.c
 
 diff --git a/arch/x86/pci/i386.c b/arch/x86/pci/i386.c
-index 01234567..89abcdef 100644
+index fa855bbae..89859b8b2 100644
 --- a/arch/x86/pci/i386.c
 +++ b/arch/x86/pci/i386.c
 @@ -360,6 +360,7 @@ static int __init pcibios_assign_resources(void)
@@ -31,10 +34,10 @@ index 01234567..89abcdef 100644
  	pcibios_fw_addr_list_del();
  
 diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 01234567..89abcdef 100644
+index 0c473d75e..3c157b30d 100644
 --- a/drivers/pci/Kconfig
 +++ b/drivers/pci/Kconfig
-@@ -144,6 +144,12 @@ config PCI_HYPERV
+@@ -252,6 +252,12 @@ config PCIE_BUS_PEER2PEER
  
  endchoice
  
@@ -48,10 +51,10 @@ index 01234567..89abcdef 100644
  source "drivers/pci/controller/Kconfig"
  source "drivers/pci/endpoint/Kconfig"
 diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
-index 01234567..89abcdef 100644
+index 522d2b974..f866adb07 100644
 --- a/drivers/pci/Makefile
 +++ b/drivers/pci/Makefile
-@@ -28,6 +28,8 @@ obj-$(CONFIG_PCI_PF_STUB)	+= pci-pf-stub.o
+@@ -31,6 +31,8 @@ obj-$(CONFIG_PCI_ECAM)		+= ecam.o
  obj-$(CONFIG_PCI_P2PDMA)	+= p2pdma.o
  obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
  
@@ -61,10 +64,10 @@ index 01234567..89abcdef 100644
  obj-$(CONFIG_PCI_ENDPOINT)	+= endpoint/
  
 diff --git a/drivers/pci/hotplug/pciehp_pci.c b/drivers/pci/hotplug/pciehp_pci.c
-index 01234567..89abcdef 100644
+index d17f3bf36..7b87b7d9b 100644
 --- a/drivers/pci/hotplug/pciehp_pci.c
 +++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -53,7 +53,11 @@ int pciehp_configure_device(struct slot *p_slot)
+@@ -61,7 +61,11 @@ int pciehp_configure_device(struct controller *ctrl)
  	for_each_pci_bridge(dev, parent)
  		pci_hp_add_bridge(dev);
  
@@ -79,7 +82,7 @@ index 01234567..89abcdef 100644
  
 diff --git a/drivers/pci/setup-prefmem.c b/drivers/pci/setup-prefmem.c
 new file mode 100644
-index 01234567..89abcdef
+index 000000000..57cd08b35
 --- /dev/null
 +++ b/drivers/pci/setup-prefmem.c
 @@ -0,0 +1,323 @@
@@ -407,10 +410,10 @@ index 01234567..89abcdef
 +}
 +EXPORT_SYMBOL(pci_reassign_prefmem_res);
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 01234567..89abcdef 100644
+index 22207a797..0054d62c5 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -622,6 +622,17 @@ static inline struct pci_dev *pci_upstream_bridge(struct pci_dev *dev)
+@@ -684,6 +684,17 @@ static inline struct pci_dev *pci_upstream_bridge(struct pci_dev *dev)
  	return dev->bus->self;
  }
  
