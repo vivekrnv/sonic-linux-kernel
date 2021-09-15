@@ -102,12 +102,12 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0048-mlxsw-reg-Extend-MTMP-register-with-new-threshold-fi.patch
 0049-mlxsw-core_env-Read-module-temperature-thresholds-us.patch
 0050-mlxsw-thermal-Add-function-for-reading-module-temper.patch
+0051-mlxsw-thermal-Read-module-temperature-thresholds-usi.patch
 
 
 # Cisco patches for 4.19 kernel
 cisco-mtd-part.patch
-cisc
-o-mdio-mux-support-acpi.patch
+cisco-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
 #
 # Marvell platform patches for 4.19
