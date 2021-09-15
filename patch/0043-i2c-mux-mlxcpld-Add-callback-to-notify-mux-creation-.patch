@@ -1,6 +1,9 @@
 From 8e6d7ffd04b6362c1b244843c70a9ac9f76bf773 Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 21:29:38 +0200
+
+commit a39bd92e92b96d05d676fb5c9493cf1c911d2a0a upstream
+
 Subject: [PATCH backport 4.19 11/11] i2c: mux: mlxcpld: Add callback to notify
  mux creation completion
 

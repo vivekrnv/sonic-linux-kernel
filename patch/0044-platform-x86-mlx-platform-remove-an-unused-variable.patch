@@ -1,6 +1,9 @@
 From c15798055ec98f7af0ce2d9866563908005b750a Mon Sep 17 00:00:00 2001
 From: Arnd Bergmann <arnd@arndb.de>
 Date: Thu, 3 Dec 2020 23:30:56 +0100
+
+commit eca6ba20f38cfa2f148d7bd13db7ccd19e88635b upstream
+
 Subject: [PATCH backport 4.19 05/10] platform/x86: mlx-platform: remove an
  unused variable
 

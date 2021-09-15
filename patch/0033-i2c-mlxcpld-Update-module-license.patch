@@ -3,6 +3,8 @@ From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Thu, 10 Dec 2020 18:51:11 +0200
 Subject: [PATCH backport 4.19 01/11] i2c: mlxcpld: Update module license
 
+commit f069291bd5fcb85c6eb53f9b1ab23bcfcaad93f2 upstream
+
 Update license to SPDX-License.
 
 Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>

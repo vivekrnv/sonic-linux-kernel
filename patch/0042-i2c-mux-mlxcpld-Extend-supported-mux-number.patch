@@ -1,6 +1,9 @@
 From 9eb7d15063a9c4932716f49e7aa9319b8e6f0ade Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 21:29:06 +0200
+
+commit 699c0506543ee9ba3f5a67ab0837b292b098aeb4 upstream
+
 Subject: [PATCH backport 4.19 10/11] i2c: mux: mlxcpld: Extend supported mux
  number
 

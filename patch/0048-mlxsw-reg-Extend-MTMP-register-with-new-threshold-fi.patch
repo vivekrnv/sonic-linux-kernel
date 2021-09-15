@@ -1,6 +1,9 @@
 From a1eae5be1d1a5d4b09be7f0bc5085289dfe94eca Mon Sep 17 00:00:00 2001
 From: Mykola Kostenok <c_mykolak@nvidia.com>
 Date: Thu, 3 Jun 2021 18:18:03 +0300
+
+commit 314dbb19f95b67456cb042e4a7a36b777a029bea upstream
+
 Subject: [PATCH 2/6] mlxsw: reg: Extend MTMP register with new threshold field
 
 Extend Management Temperature (MTMP) register with new field specifying

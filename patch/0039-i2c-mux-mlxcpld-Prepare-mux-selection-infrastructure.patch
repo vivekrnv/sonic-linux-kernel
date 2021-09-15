@@ -1,6 +1,9 @@
 From f75ab2b3d365e8e53c206179efe6b55df47f55dc Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 21:18:00 +0200
+
+commit 81566938083af15aec75201293cf6047bb04f4d3 upstream
+
 Subject: [PATCH backport 4.19 07/11] i2c: mux: mlxcpld: Prepare mux selection
  infrastructure for two-byte support
 

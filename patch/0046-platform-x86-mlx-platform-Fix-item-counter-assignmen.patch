@@ -1,6 +1,9 @@
 From 491f092cec707697107616ec691557a1d0c6cfd7 Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Mon, 7 Dec 2020 19:47:45 +0200
+
+commit cf791774a16caf87b0e4c0c55b82979bad0b6c01 upstream
+
 Subject: [PATCH backport 4.19 07/10] platform/x86: mlx-platform: Fix item
  counter assignment for MSN2700/ComEx system
 

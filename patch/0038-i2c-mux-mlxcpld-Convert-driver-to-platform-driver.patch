@@ -1,6 +1,9 @@
 From d08adf371eafde3a772a2c433b1bbfcf1a14caae Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 21:17:09 +0200
+
+commit 84af1b168c5015fca0761cf9cce4add31e354dce upstream
+
 Subject: [PATCH backport 4.19 06/11] i2c: mux: mlxcpld: Convert driver to
  platform driver
 MIME-Version: 1.0

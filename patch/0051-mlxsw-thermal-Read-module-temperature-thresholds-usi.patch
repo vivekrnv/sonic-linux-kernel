@@ -1,6 +1,9 @@
 From 0af8cae6c3eb4cb0519a972137587113a44f9f9c Mon Sep 17 00:00:00 2001
 From: Mykola Kostenok <c_mykolak@nvidia.com>
 Date: Thu, 3 Jun 2021 18:18:06 +0300
+
+commit 72a64c2fe9d8a08c9c57fc22adc1b44d13f97cac upstream
+
 Subject: [PATCH 5/6] mlxsw: thermal: Read module temperature thresholds using
  MTMP register
 

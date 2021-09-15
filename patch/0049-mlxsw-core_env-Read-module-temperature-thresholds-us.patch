@@ -1,6 +1,9 @@
 From 05212296a16d4b4cb252f16d260289b626f3eff7 Mon Sep 17 00:00:00 2001
 From: Mykola Kostenok <c_mykolak@nvidia.com>
 Date: Thu, 3 Jun 2021 18:18:04 +0300
+
+commit befc2048088aefbcd88b18225ba33231887137dc upstream
+
 Subject: [PATCH 3/6] mlxsw: core_env: Read module temperature thresholds using
  MTMP register
 

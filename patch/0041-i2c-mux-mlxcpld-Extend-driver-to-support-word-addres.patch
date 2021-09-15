@@ -1,6 +1,9 @@
 From 09c9ec94318e6e90c2aacc26655e409b4d7092d4 Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 21:28:28 +0200
+
+commit c52a1c5f5db55c6a71110c2db9ae26b9f5269d20 upstream
+
 Subject: [PATCH backport 4.19 09/11] i2c: mux: mlxcpld: Extend driver to
  support word address space devices
 

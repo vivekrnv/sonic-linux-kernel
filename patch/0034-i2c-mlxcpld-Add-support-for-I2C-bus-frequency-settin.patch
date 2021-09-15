@@ -1,6 +1,9 @@
 From cb4de56f5b1551eb925329beb4277048a8ba821f Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Wed, 6 Jan 2021 01:33:47 +0200
+
+commit 66b0c2846ba8de569026a067bb5a34ea5768408c upstream
+
 Subject: [PATCH backport 4.19 02/11] i2c: mlxcpld: Add support for I2C bus
  frequency setting
 

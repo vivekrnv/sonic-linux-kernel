@@ -1,6 +1,9 @@
 From 1b3ca3f6dac2f45e727f946ab8063c1f65ad51ec Mon Sep 17 00:00:00 2001
 From: Vadim Pasternak <vadimp@nvidia.com>
 Date: Sun, 7 Feb 2021 20:51:32 +0200
+
+commit 9ff0c6db0605e9b88360048c8d0a6a9ff647eb71 upstream
+
 Subject: [PATCH backport 4.19 05/11] platform/x86: mlxcpld: Update module
  license
 

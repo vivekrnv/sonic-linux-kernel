@@ -1,6 +1,9 @@
 From dce3743d854355fbc0aea3180ba40c937d21d499 Mon Sep 17 00:00:00 2001
 From: Mykola Kostenok <c_mykolak@nvidia.com>
 Date: Thu, 3 Jun 2021 18:18:05 +0300
+
+commit e57977b34ab5d52d73bc0b8b2ff941ac21d7166f upstream
+
 Subject: [PATCH 4/6] mlxsw: thermal: Add function for reading module
  temperature and thresholds
 
