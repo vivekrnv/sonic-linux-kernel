@@ -95,6 +95,7 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0041-i2c-mux-mlxcpld-Extend-driver-to-support-word-addres.patch
 0042-i2c-mux-mlxcpld-Extend-supported-mux-number.patch
 0043-i2c-mux-mlxcpld-Add-callback-to-notify-mux-creation-.patch
+0044-platform-x86-mlx-platform-remove-an-unused-variable.patch
 
 
 # Cisco patches for 4.19 kernel
