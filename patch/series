@@ -91,6 +91,7 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0037-platform-x86-mlxcpld-Update-module-license.patch
 0038-i2c-mux-mlxcpld-Convert-driver-to-platform-driver.patch
 0039-i2c-mux-mlxcpld-Prepare-mux-selection-infrastructure.patch
+0040-i2c-mux-mlxcpld-Get-rid-of-adapter-numbers-enforceme.patch
 
 
 # Cisco patches for 4.19 kernel
