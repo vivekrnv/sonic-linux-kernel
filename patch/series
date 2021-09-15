@@ -87,6 +87,8 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0033-i2c-mlxcpld-Update-module-license.patch
 0034-i2c-mlxcpld-Add-support-for-I2C-bus-frequency-settin.patch
 0035-i2c-mux-mlxcpld-Update-module-license.patch
+0036-i2c-mux-mlxcpld-Move-header-file-out-of-x86-realm.patch
+
 
 # Cisco patches for 4.19 kernel
 cisco-mtd-part.patch
