@@ -85,11 +85,13 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0031-backport-nvme-Add-hardware-monitoring-support.patch
 0032-platform-mellanox-mlxreg-hotplug-Use-capability-regi.patch
 0033-i2c-mlxcpld-Update-module-license.patch
+0034-i2c-mlxcpld-Add-support-for-I2C-bus-frequency-settin.patch
 
 
 # Cisco patches for 4.19 kernel
 cisco-mtd-part.patch
-cisco-mdio-mux-support-acpi.patch
+cisc
+o-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
 #
 # Marvell platform patches for 4.19
