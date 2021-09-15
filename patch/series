@@ -99,6 +99,7 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0045-platform-x86-mlx-platform-Fix-item-counter-assignmen.patch
 0046-platform-x86-mlx-platform-Fix-item-counter-assignmen.patch
 0047-mlxsw-core-Set-thermal-zone-polling-delay-argument-t.patch
+0048-mlxsw-reg-Extend-MTMP-register-with-new-threshold-fi.patch
 
 
 # Cisco patches for 4.19 kernel
