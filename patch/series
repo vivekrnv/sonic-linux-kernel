@@ -3,7 +3,6 @@
 driver-arista-net-tg3-dma-mask-4g-sb800.patch
 driver-arista-net-tg3-disallow-broadcom-default-mac.patch
 driver-arista-net-tg3-access-regs-indirectly.patch
-#driver-arista-disable-smbus-mux-for-hudson2.patch # TODO: update for current version
 driver-arista-pci-reassign-pref-mem.patch
 driver-support-sff-8436-eeprom.patch
 driver-support-sff-8436-eeprom-update.patch
@@ -11,10 +10,6 @@ driver-sff-8436-use-nvmem-framework.patch
 driver-sff-8436-use-nvmem_device_read.patch
 driver-support-sff-8436-read-write-fix.patch
 driver-i2c-bus-intel-ismt-add-delay-param.patch
-#driver-i2c-ocores-5-1.patch # Backported from 5.1 kernel, shouldn't be needed
-#driver-i2c-mux-pca954x-remove-support-for-unused-platform-d.patch # Backported from 5.2, shouldn't be needed
-#driver-i2c-mux-pca954x-allow-management-of-device-idle-stat.patch # Backported from 5.2, shouldn't be needed
-#driver-pca954x-i2c-mux-force-deselect-on-exit-flag.patch # TODO: update for current version
 kernel-add-kexec-reboot-string.patch
 driver-hwmon-max6620.patch
 driver-hwmon-max6620-fix-rpm-calc.patch
@@ -25,20 +20,15 @@ driver-hwmon-pmbus-dni_dps460-update-pmbus-core.patch
 driver-hwmon-pmbus-dni_dps460-add-status-attributes.patch
 driver-hwmon-pmbus-dps1900.patch
 driver-hwmon-pmbus-dps200.patch
-#driver-support-tun-config-carrier-enable.patch # Functionality appears to be present in 5.10
 driver-support-optoe.patch
 driver-support-optoe-EOF_fix.patch
 driver-support-optoe-chunk-offset-fix.patch
 driver-support-optoe-QSFP_DD.patch
 driver-support-optoe-write-max.patch
 driver-net-tg3-add-param-short-preamble-and-reset.patch
-#0001-hwmon-lm75-add-support-for-PCT2075.patch # TODO: Maybe present?
 0004-dt-bindings-hwmon-Add-missing-documentation-for-lm75.patch
 0005-dt-bindings-hwmon-Add-tmp75b-to-lm75.txt.patch
 0006-device-tree-bindinds-add-NXP-PCT2075-as-compatible-d.patch
-#macsec-Support-XPN-frame-handling-IEEE-802.1AEbw.patch # TODO: update for current version
-#netlink-add-NLA_MIN_LEN.patch # TODO: update for current version
-#macsec-Netlink-support-of-XPN-cipher-suites-IEEE-802.patch # TODO: dependent on previous patch
 #Support-for-fullcone-nat.patch # TODO: update for current version
 driver-ixgbe-external-phy.patch
 #net-sch_generic-fix-the-missing-new-qdisc-assignment.patch # Functionality is present
