@@ -92,6 +92,7 @@ cisco-mtd-part.patch
 cisco-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
 cisco-acpi-spi-nor.patch
+cisco-add-support-for-ltc2979-chip.patch
 cisco-Enable-static-memory-reservation-for-OIRable-PCIe-de.patch
 cisco-ds4424-null-of-node.patch
 
