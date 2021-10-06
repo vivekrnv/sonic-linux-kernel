@@ -84,6 +84,25 @@ net-sch_generic-fix-the-missing-new-qdisc-assignment.patch
 0030-hwmon-Add-convience-macro-to-define-simple-static-se.patch
 0031-backport-nvme-Add-hardware-monitoring-support.patch
 0032-platform-mellanox-mlxreg-hotplug-Use-capability-regi.patch
+0033-i2c-mlxcpld-Update-module-license.patch
+0034-i2c-mlxcpld-Add-support-for-I2C-bus-frequency-settin.patch
+0035-i2c-mux-mlxcpld-Update-module-license.patch
+0036-i2c-mux-mlxcpld-Move-header-file-out-of-x86-realm.patch
+0037-platform-x86-mlxcpld-Update-module-license.patch
+0038-i2c-mux-mlxcpld-Convert-driver-to-platform-driver.patch
+0039-i2c-mux-mlxcpld-Prepare-mux-selection-infrastructure.patch
+0040-i2c-mux-mlxcpld-Get-rid-of-adapter-numbers-enforceme.patch
+0041-i2c-mux-mlxcpld-Extend-driver-to-support-word-addres.patch
+0042-i2c-mux-mlxcpld-Extend-supported-mux-number.patch
+0043-i2c-mux-mlxcpld-Add-callback-to-notify-mux-creation-.patch
+0044-platform-x86-mlx-platform-remove-an-unused-variable.patch
+0045-platform-x86-mlx-platform-Fix-item-counter-assignmen.patch
+0046-platform-x86-mlx-platform-Fix-item-counter-assignmen.patch
+0047-mlxsw-core-Set-thermal-zone-polling-delay-argument-t.patch
+0048-mlxsw-reg-Extend-MTMP-register-with-new-threshold-fi.patch
+0049-mlxsw-core_env-Read-module-temperature-thresholds-us.patch
+0050-mlxsw-thermal-Add-function-for-reading-module-temper.patch
+0051-mlxsw-thermal-Read-module-temperature-thresholds-usi.patch
 
 
 
