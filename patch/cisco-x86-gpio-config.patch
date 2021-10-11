@@ -21,7 +21,7 @@ diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
 index d2453b251..e894cd71d 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -1033,6 +1033,15 @@ config SCHED_MC_PRIO
+@@ -1040,6 +1040,15 @@ config SCHED_MC_PRIO
  
  	  If unsure say Y here.
  
@@ -35,8 +35,8 @@ index d2453b251..e894cd71d 100644
 +	  If unsure, leave the default value.
 +
  config UP_LATE_INIT
-        def_bool y
-        depends on !SMP && X86_LOCAL_APIC
+ 	def_bool y
+ 	depends on !SMP && X86_LOCAL_APIC
 -- 
 2.26.2
 

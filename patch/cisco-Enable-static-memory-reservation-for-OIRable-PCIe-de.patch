@@ -1,6 +1,6 @@
-From 22bee632f2564c6265ff040373b70e953da2dff8 Mon Sep 17 00:00:00 2001
+From 5fb45e33edd2e5cae8ff810221b4c75c888e51a4 Mon Sep 17 00:00:00 2001
 From: Madhava Reddy Siddareddygari <msiddare@cisco.com>
-Date: Mon, 20 Sep 2021 16:05:57 -0700
+Date: Thu, 14 Oct 2021 22:16:47 -0700
 Subject: [PATCH] drivers/pci: Reserve address space for devices behind bridges
 
 Cisco data path devices are powered off by default, they will not be
@@ -12,14 +12,14 @@ will be assign the address with in the specified range.
 
 Signed-off-by: Madhava Reddy Siddareddygari <msiddare@cisco.com>
 ---
- drivers/pci/setup-bus.c | 174 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 174 insertions(+)
+ drivers/pci/setup-bus.c | 172 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 172 insertions(+)
 
 diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 87c8190de..b3265cfb9 100644
+index 2ce636937..64155eddc 100644
 --- a/drivers/pci/setup-bus.c
 +++ b/drivers/pci/setup-bus.c
-@@ -942,6 +942,156 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
+@@ -967,6 +967,154 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
  	return min_align;
  }
  
@@ -53,7 +53,7 @@ index 87c8190de..b3265cfb9 100644
 +						"Found NT device 0x%x\n",
 +						devid);
 +					nt_virt_dev = dev;
-+					break;
++				break;
 +			}
 +		}
 +
@@ -65,7 +65,7 @@ index 87c8190de..b3265cfb9 100644
 +
 +static resource_size_t
 +pci_get_plx_downstream_res_size(struct pci_bus *bus,
-+				unsigned long res_type)
++                               unsigned long res_type)
 +{
 +	int depth = 0;
 +	resource_size_t size = 0;
@@ -113,70 +113,68 @@ index 87c8190de..b3265cfb9 100644
 +	/* Only for Second level bridges */
 +	if (depth != 5)
 +		return size;
-+
 +	nt_virt_dev = plx_find_nt_device(bus->parent, 0x87b0);
 +	if (nt_virt_dev) {
 +		pci_read_config_word(nt_virt_dev, PLX_RES_MAGIC_OFFSET,
-+					&res_magic);
++							&res_magic);
 +		dev_dbg(&nt_virt_dev->dev,
-+			"Magic offset of 0x%x found in NT device\n", 
-+			res_magic);
++			"Magic offset of 0x%x found in NT device\n",
++							res_magic);
 +	}
 +
 +	if (res_magic == PLX_RES_MAGIC_VALUE) {
-+		/*
-+		 * The pacifics are connected on PLX ports:
-+		 * FC4 and FC8: #3, #4
-+		 * FC12       : #3, #4, #5
-+		 * FC18       : #3, #4, #5, #11
-+		 */
++	/*
++	 * The pacifics are connected on PLX ports:
++	 * FC4 and FC8: #3, #4
++	 * FC12       : #3, #4, #5
++	 * FC18       : #3, #4, #5, #11
++	 */
 +
-+		/* Calculate resource based on EEPROM values */
-+		ds_port_offset = (bus->number - bus->parent->number) - 1;
-+		if (ds_port_offset < 5) {
-+			pci_read_config_dword(nt_virt_dev,
-+				PLX_RES_DS_PORT_REG0, &mem_res_bitmap);
-+		} else {
-+			ds_port_offset -= 5;
-+			pci_read_config_dword(nt_virt_dev,
-+				PLX_RES_DS_PORT_REG1, &mem_res_bitmap);
-+		}
-+		port_bitmap = mem_res_bitmap;
-+		dev_dbg(&bus->dev, "Port offset: 0x%x, res bitmap 0x%x\n",
++	/* Calculate resource based on EEPROM values */
++	ds_port_offset = (bus->number - bus->parent->number) - 1;
++	if (ds_port_offset < 5) {
++		pci_read_config_dword(nt_virt_dev,
++			PLX_RES_DS_PORT_REG0, &mem_res_bitmap);
++	} else {
++		ds_port_offset -= 5;
++		pci_read_config_dword(nt_virt_dev,
++			PLX_RES_DS_PORT_REG1, &mem_res_bitmap);
++	}
++	port_bitmap = mem_res_bitmap;
++	dev_dbg(&bus->dev, "Port offset: 0x%x, res bitmap 0x%x\n",
 +				ds_port_offset, mem_res_bitmap);
++	if (ds_port_offset < 5) {
++		u8 m[] = { 26, 20, 14, 8, 2 };
++		u8 s[] = { 31, 25, 19, 13, 7 };
 +
-+		if (ds_port_offset < 5) {
-+			u8 m[] = { 26, 20, 14, 8, 2 };
-+			u8 s[] = { 31, 25, 19, 13, 7 };
++		multiplier = (port_bitmap >> m[ds_port_offset])
++						& PLX_RES_P_MASK;
++		np_size = (port_bitmap >> s[ds_port_offset])
++						& PLX_RES_NP_MASK;
++                       
++		dev_dbg(&bus->dev, "Multiplier: %d, np_size: %d\n",
++						multiplier, np_size);
 +
-+			multiplier = (port_bitmap >> m[ds_port_offset])
-+					& PLX_RES_P_MASK;
-+			np_size = (port_bitmap >> s[ds_port_offset])
-+					& PLX_RES_NP_MASK;
-+
-+			dev_dbg(&bus->dev, "Multiplier: %d, np_size: %d\n",
-+					multiplier, np_size);
-+
-+			if (res_type & IORESOURCE_PREFETCH) {
-+				size = 0x100000 << (multiplier - 1);
-+				dev_dbg(&bus->dev,
-+					"Pref Multiplier %d, Size 0x%llx\n",
-+					multiplier, (long long) size);
-+			} else if (np_size) {
-+				size = 0x100000;
-+				dev_dbg(&bus->dev,
-+					"NP Size 0x%llx\n", (long long) size);
-+			}
++		if (res_type & IORESOURCE_PREFETCH) {
++			size = 0x100000 << (multiplier - 1);
++			dev_dbg(&bus->dev,
++				"Pref Multiplier %d, Size 0x%llx\n",
++				multiplier, (long long) size);
++		} else if (np_size) {
++			size = 0x100000;
++			dev_dbg(&bus->dev,
++				"NP Size 0x%llx\n", (long long) size);
 +		}
 +	}
++}
 +
 +	return size;
 +}
 +
  /**
-  * pbus_size_mem() - size the memory window of a given bus
+  * pbus_size_mem() - Size the memory window of a given bus
   *
-@@ -976,6 +1126,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+@@ -1001,6 +1149,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
  	resource_size_t children_add_size = 0;
  	resource_size_t children_add_align = 0;
  	resource_size_t add_align = 0;
@@ -184,7 +182,7 @@ index 87c8190de..b3265cfb9 100644
  
  	if (!b_res)
  		return -ENOSPC;
-@@ -987,6 +1138,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+@@ -1016,6 +1165,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
  	list_for_each_entry(dev, &bus->devices, bus_list) {
  		int i;
  
@@ -192,7 +190,7 @@ index 87c8190de..b3265cfb9 100644
  		for (i = 0; i < PCI_NUM_RESOURCES; i++) {
  			struct resource *r = &dev->resource[i];
  			resource_size_t r_size;
-@@ -1040,6 +1192,28 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+@@ -1071,6 +1221,28 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
  		}
  	}
  
@@ -212,7 +210,7 @@ index 87c8190de..b3265cfb9 100644
 +					dev_dbg(&bus->self->dev,
 +						"max_order reset to %d;"
 +						"size %zx\n",
-+						max_order, (size_t)size);
++					max_order, (size_t)size);
 +				}
 +			}
 +		}
@@ -220,7 +218,7 @@ index 87c8190de..b3265cfb9 100644
 +
  	min_align = calculate_mem_align(aligns, max_order);
  	min_align = max(min_align, window_alignment(bus, b_res->flags));
- 	size0 = calculate_memsize(size, min_size, 0, resource_size(b_res), min_align);
+ 	size0 = calculate_memsize(size, min_size, 0, 0, resource_size(b_res), min_align);
 -- 
 2.26.2
 

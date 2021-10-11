@@ -79,15 +79,12 @@ driver-ixgbe-external-phy.patch
 
 0001-net-prefer-socket-bound-to-interface-when-not-in-VRF.patch
 
-
-# Cisco patches for 4.19 kernel
+# Cisco patches for 5.10 kernel
 cisco-mtd-part.patch
-#cisco-mdio-mux-support-acpi.patch
+cisco-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
-#cisco-acpi-spi-nor.patch # TODO: Update for 5.10
-#cisco-add-support-for-ltc2979-chip.patch # TODO: Update for 5.10
-#cisco-Enable-static-memory-reservation-for-OIRable-PCIe-de.patch # TODO: Update for 5.10
-#cisco-ds4424-null-of-node.patch # TODO: Update for 5.10
+cisco-acpi-spi-nor.patch
+cisco-Enable-static-memory-reservation-for-OIRable-PCIe-de.patch
 
 #
 # Marvell platform patches for 4.19
