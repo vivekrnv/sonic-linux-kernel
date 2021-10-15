@@ -30,6 +30,7 @@ driver-support-optoe.patch
 driver-support-optoe-EOF_fix.patch
 driver-support-optoe-chunk-offset-fix.patch
 driver-support-optoe-QSFP_DD.patch
+driver-support-optoe-write-max.patch
 driver-net-tg3-add-param-short-preamble-and-reset.patch
 #0001-hwmon-lm75-add-support-for-PCT2075.patch # TODO: Maybe present?
 0004-dt-bindings-hwmon-Add-missing-documentation-for-lm75.patch
@@ -88,9 +89,16 @@ driver-ixgbe-external-phy.patch
 
 0001-net-prefer-socket-bound-to-interface-when-not-in-VRF.patch
 
+
+# Cisco patches for 4.19 kernel
+cisco-mtd-part.patch
+cisco-mdio-mux-support-acpi.patch
+cisco-x86-gpio-config.patch
 #
 # Marvell platform patches for 4.19
 armhf_secondary_boot_online.patch
+#
+#
 ############################################################
 #
 # Internal patches will be added below (placeholder)
