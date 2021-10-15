@@ -92,8 +92,13 @@ driver-ixgbe-external-phy.patch
 
 # Cisco patches for 4.19 kernel
 cisco-mtd-part.patch
-cisco-mdio-mux-support-acpi.patch
+#cisco-mdio-mux-support-acpi.patch
 cisco-x86-gpio-config.patch
+#cisco-acpi-spi-nor.patch # TODO: Update for 5.10
+#cisco-add-support-for-ltc2979-chip.patch # TODO: Update for 5.10
+#cisco-Enable-static-memory-reservation-for-OIRable-PCIe-de.patch # TODO: Update for 5.10
+#cisco-ds4424-null-of-node.patch # TODO: Update for 5.10
+
 #
 # Marvell platform patches for 4.19
 armhf_secondary_boot_online.patch
