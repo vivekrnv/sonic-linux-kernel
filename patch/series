@@ -43,39 +43,50 @@ driver-ixgbe-external-phy.patch
 # Trtnetlink-catch-EOPNOTSUPP-errors.patch
 # Tbridge-per-port-multicast-broadcast-flood-flags.patch
 #
-# Mellanox patches for 4.19
-# TODO: All patches below have been disabled, pending review
-#0001-Mellanox-platform-Backport-patches-for-new-Mellanox-.patch
-#0003-mlxsw-minimal-Fix-validation-for-FW-minor-version.patch
-#0004-mlxsw-core-Add-the-hottest-thermal-zone-detection.patch
-#0005-hwmon-pmbus-core-Add-support-for-vid-mode-detection-.patch
-#0006-platform-mellanox-mlxreg-hotplug-Use-capability-r.patch
-#0007-mlxsw-core-thermal-Set-default-thermal-trips-at-init.patch
-#0008-mlxsw-qsfp_sysfs-Remove-obsolete-code-for-QSFP-EEPRO.patch
-#0009-platform-mellanox-mlxreg-io-Add-support-for-compl.patch
-#0010-platform-mellanox-mlxreg-hotplug-Add-environmental-d.patch
-#0011-mlxsw-core-thermal-Separate-temperature-trend-read-c.patch
-#0012-Add-support-for-new-transceivers-types-QSFP-DD-and-Q.patch
-#0013-watchdog-mlx-wdt-support-new-watchdog-type-with-long.patch
-#0014-mlxsw-i2c-Fix-comment-misspelling.patch
-#0015-mlxsw-i2c-Modify-input-parameter-name-in-initializat.patch
-#0016-mlxsw-i2c-Extend-input-parameters-list-of-command-AP.patch
-#0017-mlxsw-i2c-Extend-initialization-by-querying-resource.patch
-#0018-mlxsw-i2c-Extend-initialization-with-querying-firmware.patch
-#0019-mlxsw-i2c-Allow-flexible-setting-of-I2C-transactions.patch
-#0020-mlxsw-core-Set-different-thermal-polling-time-based.patch
-#0021-platform-x86-mlx-platform-Remove-PSU-EEPROM-configur.patch
-#0022-mlxsw-core-Increase-critical-threshold-for-ASIC-ther.patch
-#0023-mlxsw-core-Add-validation-of-transceiver-temperature.patch
-#0024-mlxsw-core-Fix-memory-leak-on-module-removal.patch
-#0025-platform-x86-mlx-platform-Remove-PSU-EEPROM-configur.patch
-#0026-platform-x86-mlx-platform-Remove-PSU-EEPROM-configur.patch
-#0027-mlxsw-core-Remove-critical-trip-point-from-thermal-z.patch
-#0028-thermal-Fix-deadlock-in-thermal-thermal_zone_device_.patch
-#0029-hwmon-pmbus-Add-support-for-MPS-Multi-phase-mp2975-c.patch
-#0030-hwmon-Add-convience-macro-to-define-simple-static-se.patch
-#0031-backport-nvme-Add-hardware-monitoring-support.patch
-#0032-platform-mellanox-mlxreg-hotplug-Use-capability-regi.patch
+
+# Mellanox patches for 5.10
+0001-i2c-mlxcpld-Update-module-license.patch
+0002-i2c-mlxcpld-Decrease-polling-time-for-performance-im.patch
+0003-i2c-mlxcpld-Add-support-for-I2C-bus-frequency-settin.patch
+0004-i2c-mux-mlxcpld-Update-module-license.patch
+0005-i2c-mux-mlxcpld-Move-header-file-out-of-x86-realm.patch
+0006-i2c-mux-mlxcpld-Convert-driver-to-platform-driver.patch
+0007-i2c-mux-mlxcpld-Prepare-mux-selection-infrastructure.patch
+0008-i2c-mux-mlxcpld-Get-rid-of-adapter-numbers-enforceme.patch
+0009-i2c-mux-mlxcpld-Extend-driver-to-support-word-addres.patch
+0010-i2c-mux-mlxcpld-Extend-supported-mux-number.patch
+0011-i2c-mux-mlxcpld-Add-callback-to-notify-mux-creation-.patch
+0012-hwmon-mlxreg-fan-Add-support-for-fan-drawers-capabil.patch
+0013-hwmon-pmbus-shrink-code-and-remove-pmbus_do_remove.patch
+0014-thermal-drivers-core-Use-a-char-pointer-for-the-cool.patch
+0015-mlxsw-core-Remove-critical-trip-points-from-thermal-.patch
+0016-net-don-t-include-ethtool.h-from-netdevice.h.patch
+0017-mlxsw-reg-Extend-MTMP-register-with-new-threshold-fi.patch
+0018-mlxsw-thermal-Add-function-for-reading-module-temper.patch
+0019-mlxsw-thermal-Read-module-temperature-thresholds-usi.patch
+0020-mlxsw-thermal-Fix-null-dereference-of-NULL-temperatu.patch
+0021-mlxsw-reg-Add-bank-number-to-MCIA-register.patch
+0022-mlxsw-reg-Document-possible-MCIA-status-values.patch
+0023-ethtool-Allow-network-drivers-to-dump-arbitrary-EEPR.patch
+0024-net-ethtool-Export-helpers-for-getting-EEPROM-info.patch
+0025-ethtool-Add-fallback-to-get_module_eeprom-from-netli.patch
+0026-mlxsw-core-Add-support-for-module-EEPROM-read-by-pag.patch
+0027-ethtool-Decrease-size-of-module-EEPROM-get-policy-ar.patch
+0028-ethtool-Use-kernel-data-types-for-internal-EEPROM-st.patch
+0029-ethtool-Validate-module-EEPROM-length-as-part-of-pol.patch
+0030-ethtool-Validate-module-EEPROM-offset-as-part-of-pol.patch
+0031-mlxsw-core_env-Read-module-temperature-thresholds-us.patch
+0032-mlxsw-core_env-Avoid-unnecessary-memcpy-s.patch
+0033-mlxsw-Verify-the-accessed-index-doesn-t-exceed-the-a.patch
+0034-hwmon-pmbus-Increase-maximum-number-of-phases-per-pa.patch
+0035-hwmon-pmbus-Add-support-for-MPS-Multi-phase-mp2888-c.patch
+0036-dt-bindings-Add-MP2888-voltage-regulator-device.patch
+0037-ethtool-wire-in-generic-SFP-module-access.patch
+0038-ethtool-Fix-NULL-pointer-dereference-during-module-E.patch
+0039-phy-sfp-add-netlink-SFP-support-to-generic-SFP-code.patch
+0040-net-ethtool-clear-heap-allocations-for-ethtool-funct.patch
+0041-ethtool-support-FEC-settings-over-netlink.patch
+0052-mlxsw-core-Avoid-creation-virtual-hwmon-objects-by-t.patch
 
 0001-net-prefer-socket-bound-to-interface-when-not-in-VRF.patch
 
