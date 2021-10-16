@@ -1,5 +1,7 @@
 Force DMA accesses to be done in the 4G range due to a SB800 limitation
 
+From: Samuel Angebault <angebault.samuel@gmail.com>
+
 This issue is seen on Arista DCS-7050QX-32 SKUs
 ---
  drivers/net/ethernet/broadcom/tg3.c |   17 ++++++++++++++---
@@ -7,10 +9,10 @@ This issue is seen on Arista DCS-7050QX-32 SKUs
  2 files changed, 15 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 1af4e1607..2e6a88094 100644
+index 5143cdd0e..72198ef56 100644
 --- a/drivers/net/ethernet/broadcom/tg3.c
 +++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -16365,6 +16365,16 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+@@ -16353,6 +16353,16 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
  		} while (bridge);
  	}
  
@@ -27,7 +29,7 @@ index 1af4e1607..2e6a88094 100644
  	if (tg3_asic_rev(tp) == ASIC_REV_5704 ||
  	    tg3_asic_rev(tp) == ASIC_REV_5714)
  		tp->pdev_peer = tg3_find_peer(tp);
-@@ -16892,8 +16902,9 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+@@ -16880,8 +16890,9 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
  
  	if (tg3_asic_rev(tp) == ASIC_REV_5705 &&
  	    (grc_misc_cfg == GRC_MISC_CFG_BOARD_ID_5788 ||
@@ -39,7 +41,7 @@ index 1af4e1607..2e6a88094 100644
  
  	if (!tg3_flag(tp, IS_5788) &&
  	    tg3_asic_rev(tp) != ASIC_REV_5700)
-@@ -17804,7 +17815,7 @@ static int tg3_init_one(struct pci_dev *pdev,
+@@ -17757,7 +17768,7 @@ static int tg3_init_one(struct pci_dev *pdev,
  	 * On 64-bit systems without IOMMU, use 64-bit dma_mask and
  	 * do DMA address check in tg3_start_xmit().
  	 */
@@ -49,7 +51,7 @@ index 1af4e1607..2e6a88094 100644
  	else if (tg3_flag(tp, 40BIT_DMA_BUG)) {
  		persist_dma_mask = dma_mask = DMA_BIT_MASK(40);
 diff --git a/drivers/net/ethernet/broadcom/tg3.h b/drivers/net/ethernet/broadcom/tg3.h
-index a772a33b6..09eda72ab 100644
+index 1000c8940..3e004b0bf 100644
 --- a/drivers/net/ethernet/broadcom/tg3.h
 +++ b/drivers/net/ethernet/broadcom/tg3.h
 @@ -3120,6 +3120,7 @@ enum TG3_FLAGS {

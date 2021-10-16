@@ -1,6 +1,7 @@
 From 500d48948f43d18a07894b5fd4f891afbade1d79 Mon Sep 17 00:00:00 2001
+
 From: Antony Rheneus <arheneus@marvell.com>
-Date: Thu, 1 Jul 2021 20:34:01 +0530
+
 Subject: [PATCH 1/1] From 28c199cfda1746644211893b6614acbac970515b Mon Sep 17
  00:00:00 2001 Subject: [PATCH 1/1] CPU1 failed to come online
 MIME-Version: 1.0
@@ -11,7 +12,7 @@ Issue: On contiuous reboot once in a while CPU1 (secondary cpu) doesn't
 come online
 The issue comes after migrating to Debian gcc 8.3.6, the issue was not seen till gcc7
 
-Until introducing the Debian GCC 8.x version – the execution process didn’t influence 
+Until introducing the Debian GCC 8.x version – the execution process didn’t influence
 mmu intialization before starting the socondary processor.
 The new GCC version makes some optimizations that execute the SW faster and once in a while,
 causing the Secondary CORE to start while the MMU is still in the initialization stage.
@@ -20,11 +21,11 @@ compensate the optimized code and enables the MMU to init successfully before th
 
 Signed-off-by: Antony Rheneus <arheneus@marvell.com>
 ---
- arch/arm/mach-mvebu/platsmp-a9.c | 4 ++++
+ arch/arm/mach-mvebu/platsmp-a9.c |    4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/mach-mvebu/platsmp-a9.c b/arch/arm/mach-mvebu/platsmp-a9.c
-index d715dec..9c076c6 100644
+index d715dec1c..9c076c6fb 100644
 --- a/arch/arm/mach-mvebu/platsmp-a9.c
 +++ b/arch/arm/mach-mvebu/platsmp-a9.c
 @@ -17,12 +17,15 @@
@@ -51,6 +52,3 @@ index d715dec..9c076c6 100644
  	/*
  	 * Doing this before deasserting the CPUs is needed to wake up CPUs
  	 * in the offline state after using CPU hotplug.
--- 
-2.7.4
-

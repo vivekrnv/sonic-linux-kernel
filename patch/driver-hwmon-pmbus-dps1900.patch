@@ -2,6 +2,7 @@ dps1900 module to support Delta DPS1900 devices.
 
 From: deni64k <deni64k@github>
 
+
 ---
  drivers/hwmon/pmbus/Kconfig   |   10 ++++++
  drivers/hwmon/pmbus/Makefile  |    1 +
@@ -10,10 +11,10 @@ From: deni64k <deni64k@github>
  create mode 100644 drivers/hwmon/pmbus/dps1900.c
 
 diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index 720945848..505ca2be0 100644
+index 3fd57f62a..91a7ce9df 100644
 --- a/drivers/hwmon/pmbus/Kconfig
 +++ b/drivers/hwmon/pmbus/Kconfig
-@@ -208,4 +208,14 @@ config SENSORS_ZL6100
+@@ -297,4 +297,14 @@ config SENSORS_ZL6100
  	  This driver can also be built as a module. If so, the module will
  	  be called zl6100.
  
@@ -29,17 +30,17 @@ index 720945848..505ca2be0 100644
 +
  endif # PMBUS
 diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index c67f5a290..c76820a4d 100644
+index 6cf17031a..925f4901b 100644
 --- a/drivers/hwmon/pmbus/Makefile
 +++ b/drivers/hwmon/pmbus/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_SENSORS_TPS53679)	+= tps53679.o
- obj-$(CONFIG_SENSORS_UCD9000)	+= ucd9000.o
+@@ -33,3 +33,4 @@ obj-$(CONFIG_SENSORS_UCD9000)	+= ucd9000.o
  obj-$(CONFIG_SENSORS_UCD9200)	+= ucd9200.o
+ obj-$(CONFIG_SENSORS_XDPE122)	+= xdpe12284.o
  obj-$(CONFIG_SENSORS_ZL6100)	+= zl6100.o
 +obj-$(CONFIG_SENSORS_DPS1900)	+= dps1900.o
 diff --git a/drivers/hwmon/pmbus/dps1900.c b/drivers/hwmon/pmbus/dps1900.c
 new file mode 100644
-index 000000000..b26c1952f
+index 000000000..76da10ce3
 --- /dev/null
 +++ b/drivers/hwmon/pmbus/dps1900.c
 @@ -0,0 +1,70 @@
@@ -52,7 +53,7 @@ index 000000000..b26c1952f
 +#include <linux/pmbus.h>
 +#include "pmbus.h"
 +
-+static int dps1900_read_word_data(struct i2c_client *client, int page, int reg)
++static int dps1900_read_word_data(struct i2c_client *client, int page, int phase, int reg)
 +{
 +	if (reg >= PMBUS_VIRT_BASE ||
 +	    reg == PMBUS_OT_WARN_LIMIT ||
@@ -72,7 +73,7 @@ index 000000000..b26c1952f
 +	    reg == PMBUS_IOUT_UC_FAULT_LIMIT ||
 +	    reg == PMBUS_POUT_MAX)
 +		return -ENXIO;
-+	return pmbus_read_word_data(client, page, reg);
++	return pmbus_read_word_data(client, page, phase, reg);
 +}
 +
 +static struct pmbus_driver_info dps1900_info = {
@@ -88,7 +89,7 @@ index 000000000..b26c1952f
 +static int dps1900_probe(struct i2c_client *client,
 +			 const struct i2c_device_id *id)
 +{
-+	return pmbus_do_probe(client, id, &dps1900_info);
++	return pmbus_do_probe(client, &dps1900_info);
 +}
 +
 +static const struct i2c_device_id dps1900_id[] = {

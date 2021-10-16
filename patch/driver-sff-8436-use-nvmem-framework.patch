@@ -10,10 +10,10 @@ that the 'eeprom' file in sys is provided by the framework.
  2 files changed, 41 insertions(+), 35 deletions(-)
 
 diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index e3acc9b2a..05bcf1e1f 100644
+index c7d5cc8ad..b1a9be835 100644
 --- a/drivers/misc/eeprom/Kconfig
 +++ b/drivers/misc/eeprom/Kconfig
-@@ -114,6 +114,7 @@ config EEPROM_IDT_89HPESX
+@@ -132,6 +132,7 @@ config EEPROM_EE1004
  config EEPROM_SFF_8436
  	tristate "SFF-8436 QSFP EEPROMs support"
  	depends on I2C && SYSFS

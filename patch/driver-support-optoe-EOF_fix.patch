@@ -14,7 +14,7 @@ Signed-off-by: Don Bollinger
  1 file changed, 36 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/misc/eeprom/optoe.c b/drivers/misc/eeprom/optoe.c
-index 7425bf60e..b3064f02b 100644
+index 6813e46d7..bb33be2a2 100644
 --- a/drivers/misc/eeprom/optoe.c
 +++ b/drivers/misc/eeprom/optoe.c
 @@ -158,6 +158,7 @@ struct optoe_platform_data {

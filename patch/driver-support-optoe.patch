@@ -18,10 +18,10 @@ Signed-off-by: Don Bollinger <don@thebollingers.org>
  create mode 100644 drivers/misc/eeprom/optoe.c
 
 diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index 05bcf1e1f..9f444adae 100644
+index b1a9be835..795b05fbd 100644
 --- a/drivers/misc/eeprom/Kconfig
 +++ b/drivers/misc/eeprom/Kconfig
-@@ -124,4 +124,22 @@ config EEPROM_SFF_8436
+@@ -142,4 +142,22 @@ config EEPROM_SFF_8436
  	  This driver can also be built as a module.  If so, the module
  	  will be called sff_8436.
  
@@ -45,17 +45,17 @@ index 05bcf1e1f..9f444adae 100644
 +
  endmenu
 diff --git a/drivers/misc/eeprom/Makefile b/drivers/misc/eeprom/Makefile
-index 6a6d90ffe..80afa837e 100644
+index 647ffac5f..d95b4860d 100644
 --- a/drivers/misc/eeprom/Makefile
 +++ b/drivers/misc/eeprom/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_EEPROM_93XX46)	+= eeprom_93xx46.o
- obj-$(CONFIG_EEPROM_DIGSY_MTC_CFG) += digsy_mtc_eeprom.o
+@@ -9,3 +9,4 @@ obj-$(CONFIG_EEPROM_DIGSY_MTC_CFG) += digsy_mtc_eeprom.o
  obj-$(CONFIG_EEPROM_IDT_89HPESX) += idt_89hpesx.o
+ obj-$(CONFIG_EEPROM_EE1004)	+= ee1004.o
  obj-$(CONFIG_EEPROM_SFF_8436)	+= sff_8436_eeprom.o
 +obj-$(CONFIG_EEPROM_OPTOE)	+= optoe.o
 diff --git a/drivers/misc/eeprom/optoe.c b/drivers/misc/eeprom/optoe.c
 new file mode 100644
-index 000000000..7425bf60e
+index 000000000..6813e46d7
 --- /dev/null
 +++ b/drivers/misc/eeprom/optoe.c
 @@ -0,0 +1,1126 @@
@@ -1084,10 +1084,10 @@ index 000000000..7425bf60e
 +
 +	/* SFF-8472 spec requires that the second I2C address be 0x51 */
 +	if (num_addresses == 2) {
-+		optoe->client[1] = i2c_new_dummy(client->adapter, 0x51);
-+		if (!optoe->client[1]) {
++		optoe->client[1] = i2c_new_dummy_device(client->adapter, 0x51);
++		if (IS_ERR(optoe->client[1])) {
 +			dev_err(&client->dev, "address 0x51 unavailable\n");
-+			err = -EADDRINUSE;
++			err = PTR_ERR(optoe->client[1]);
 +			goto err_struct;
 +		}
 +	}

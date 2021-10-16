@@ -11,11 +11,11 @@ From: Cumulus Networks <support@cumulusnetworks.com>
  create mode 100644 drivers/hwmon/max6620.c
 
 diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index c7adaca2a..d0b4b1b34 100644
+index a850e4f0e..551bdbe26 100644
 --- a/drivers/hwmon/Kconfig
 +++ b/drivers/hwmon/Kconfig
-@@ -905,6 +905,16 @@ config SENSORS_MAX6650
- 	  This driver can also be built as a module.  If so, the module
+@@ -1047,6 +1047,16 @@ config SENSORS_MAX6650
+ 	  This driver can also be built as a module. If so, the module
  	  will be called max6650.
  
 +config SENSORS_MAX6620
@@ -25,17 +25,17 @@ index c7adaca2a..d0b4b1b34 100644
 +	  If you say yes here you get support for the MAX6620
 +	  sensor chips.
 +
-+	  This driver can also be built as a module.  If so, the module
++	  This driver can also be built as a module. If so, the module
 +	  will be called max6620.
 +
  config SENSORS_MAX6697
  	tristate "Maxim MAX6697 and compatibles"
  	depends on I2C
 diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index 93f7f41ea..6eca4ea6d 100644
+index 9db2903b6..b9aed4678 100644
 --- a/drivers/hwmon/Makefile
 +++ b/drivers/hwmon/Makefile
-@@ -124,6 +124,7 @@ obj-$(CONFIG_SENSORS_MAX6621)	+= max6621.o
+@@ -136,6 +136,7 @@ obj-$(CONFIG_SENSORS_MAX6621)	+= max6621.o
  obj-$(CONFIG_SENSORS_MAX6639)	+= max6639.o
  obj-$(CONFIG_SENSORS_MAX6642)	+= max6642.o
  obj-$(CONFIG_SENSORS_MAX6650)	+= max6650.o
