@@ -153,6 +153,7 @@ cisco-hwmon-pmbus_core-pec-support-check.patch
 # sFlow + dropmon support
 0001-psample-Encapsulate-packet-metadata-in-a-struct.patch
 0002-psample-Add-additional-metadata-attributes.patch
+0003-psample-define-the-macro-PSAMPLE_MD_EXTENDED_ATTR.patch
 
 #
 # Marvell platform patches for 4.19

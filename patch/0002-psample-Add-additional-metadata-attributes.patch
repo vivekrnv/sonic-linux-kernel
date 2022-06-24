@@ -4,7 +4,7 @@ Date: Sun, 14 Mar 2021 14:19:31 +0200
 
 [backport of upstream commit 07e1a5809b595df6e125504dff6245cb2c8ed3de]
 
-Subject: [PATCH 2/2] psample: Add additional metadata attributes
+Subject: [PATCH 2/3] psample: Add additional metadata attributes
 
 Extend psample to report the following attributes when available:
 
