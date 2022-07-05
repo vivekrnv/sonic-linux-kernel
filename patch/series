@@ -128,6 +128,7 @@ kernel-compat-always-include-linux-compat.h-from-net-compat.patch
 0096-hwmon-mlxreg-fan-Modify-PWM-connectivity-valida.patch
 0097-hwmon-mlxreg-fan-Support-distinctive-names-per-.patch
 0999-Revert-mlxsw-thermal-Fix-out-of-bounds-memory-a.patch
+0098-mlxsw-i2c-Prevent-transaction-execution-for.patch
 
 
 # Cisco patches for 5.10 kernel
