@@ -49,6 +49,9 @@ kernel-compat-always-include-linux-compat.h-from-net-compat.patch
 #
 
 # Mellanox patches for 5.10
+0008-i2c-mux-mlxcpld-Get-rid-of-adapter-numbers-enfo.patch
+0009-i2c-mux-mlxcpld-Extend-driver-to-support-word-a.patch
+0011-i2c-mux-mlxcpld-Add-callback-to-notify-mux-crea.patch
 0013-hwmon-pmbus-shrink-code-and-remove-pmbus_do_rem.patch
 0014-thermal-drivers-core-Use-a-char-pointer-for-the.patch
 0016-net-don-t-include-ethtool.h-from-netdevice.h.patch
@@ -66,17 +69,19 @@ kernel-compat-always-include-linux-compat.h-from-net-compat.patch
 0040-phy-sfp-add-netlink-SFP-support-to-generic-SFP-.patch
 0042-ethtool-support-FEC-settings-over-netlink.patch
 0055-platform_data-mlxreg-Add-new-type-to-support-mo.patch
+0057-platform-mellanox-mlxreg-hotplug-Extend-logic-f.patch
 0060-platform_data-mlxreg-Add-new-field-for-secured-.patch
 0062-Documentation-ABI-Add-new-attributes-for-mlxreg.patch
 0063-Documentation-ABI-Add-new-line-card-attributes-.patch
 0076-ethtool-Add-ability-to-control-transceiver-modu.patch
 0080-ethtool-Add-transceiver-module-extended-states.patch
-0082-mlxsw-core-Extend-external-cooling-device-whitelist-.patch  
-0085-hwmon-powr1220-Upgrade-driver-to-support-hwmon-info-.patch  
-0086-hwmon-powr1220-Add-support-for-Lattice-s-POWR1014-po.patch  
-0087-hwmon-Add-support-for-EMC2305-RPM-based-PWM-Fan-Spee.patch  
-0088-dt-bindings-Add-description-for-EMC2305-for-RPM-base.patch  
-0090-Documentation-ABI-Add-new-attributes-for-mlxreg-io-s.patch 
+0082-mlxsw-core-Extend-external-cooling-device-whitelist-.patch
+0083-platform_data-mlxreg-Add-field-for-notification-call.patch
+0085-hwmon-powr1220-Upgrade-driver-to-support-hwmon-info-.patch
+0086-hwmon-powr1220-Add-support-for-Lattice-s-POWR1014-po.patch
+0087-hwmon-Add-support-for-EMC2305-RPM-based-PWM-Fan-Spee.patch
+0088-dt-bindings-Add-description-for-EMC2305-for-RPM-base.patch
+0090-Documentation-ABI-Add-new-attributes-for-mlxreg-io-s.patch
 0999-Revert-mlxsw-thermal-Fix-out-of-bounds-memory-a.patch
 0098-mlxsw-i2c-Prevent-transaction-execution-for.patch
 
