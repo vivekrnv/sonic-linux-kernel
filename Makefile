@@ -103,9 +103,8 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	mkdir $(NON_UP_LOC)
 
 	if [ ! -z ${EXTERNAL_KERNEL_PATCHES} ];  then
-		wget ${EXTERNAL_KERNEL_PATCHES}
-		PATCH_TAR=$(basename ${EXTERNAL_KERNEL_PATCHES})
-		tar -zxf $(PATCH_TAR) -C $(NON_UP_LOC)
+		wget ${EXTERNAL_KERNEL_PATCHES} -O patches.tar.gz
+		tar -zxf patches.tar.gz -C $(NON_UP_LOC)
 	fi
 
 	# Precedence is given for external URL
@@ -116,6 +115,8 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	fi
 
 	if [ -f "$(NON_UP_LOC)/series" ]; then
+		echo "External Patches applied:"
+		cat $(NON_UP_LOC)/series
 		stg import -s $(NON_UP_LOC)/series
 	fi
 
