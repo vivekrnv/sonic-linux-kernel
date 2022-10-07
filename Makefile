@@ -56,6 +56,7 @@ SOURCE_FILE_BASE_URL="https://sonicstorage.blob.core.windows.net/debian-security
 DSC_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(DSC_FILE)"
 DEBIAN_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(DEBIAN_FILE)"
 ORIG_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(ORIG_FILE)"
+NON_UP_LOC = non_upstream_patches
 
 $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	# Obtaining the Debian kernel source
@@ -98,6 +99,25 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	# Learning new git repo head (above commit) by calling stg repair.
 	stg repair
 	stg import -s ../patch/series
+
+	mkdir $(NON_UP_LOC)
+
+	if [ ! -z ${EXTERNAL_KERNEL_PATCHES} ];  then
+		wget ${EXTERNAL_KERNEL_PATCHES}
+		PATCH_TAR=$(basename ${EXTERNAL_KERNEL_PATCHES})
+		tar -zxf $(PATCH_TAR) -C $(NON_UP_LOC)
+	fi
+
+	# Precedence is given for external URL
+	if [ -z ${EXTERNAL_KERNEL_PATCHES} ] && [ x${INCLUDE_MLNX_PATCHES} == xy ]; then
+		if [ -f "../../../$(MLNX_PATCH_LOC)" ]; then
+			tar -zxf ../../../$(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
+		fi
+	fi
+
+	if [ -f "$(NON_UP_LOC)/series" ]; then
+		stg import -s $(NON_UP_LOC)/series
+	fi
 
 	# Optionally add/remove kernel options
 	if [ -f ../manage-config ]; then
