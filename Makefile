@@ -110,7 +110,7 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	# Precedence is given for external URL
 	if [ -z ${EXTERNAL_KERNEL_PATCHES} ] && [ x${INCLUDE_MLNX_PATCHES} == xy ]; then
 		if [ -f "$(MLNX_PATCH_LOC)" ]; then
-			tar $(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
+			tar -zxf $(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
 		fi
 	fi
 
