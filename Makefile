@@ -103,14 +103,14 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	mkdir $(NON_UP_LOC)
 
 	if [ ! -z ${EXTERNAL_KERNEL_PATCHES} ];  then
-		wget ${EXTERNAL_KERNEL_PATCHES} -O patches.tar.gz
-		tar -zxf patches.tar.gz -C $(NON_UP_LOC)
+		wget ${EXTERNAL_KERNEL_PATCHES} -O patches.tar
+		tar -xf patches.tar -C $(NON_UP_LOC)
 	fi
 
 	# Precedence is given for external URL
 	if [ -z ${EXTERNAL_KERNEL_PATCHES} ] && [ x${INCLUDE_MLNX_PATCHES} == xy ]; then
 		if [ -f "$(MLNX_PATCH_LOC)" ]; then
-			tar -zxf $(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
+			tar -xf $(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
 		fi
 	fi
 
