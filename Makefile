@@ -56,7 +56,7 @@ SOURCE_FILE_BASE_URL="https://sonicstorage.blob.core.windows.net/debian-security
 DSC_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(DSC_FILE)"
 DEBIAN_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(DEBIAN_FILE)"
 ORIG_FILE_URL = "$(SOURCE_FILE_BASE_URL)/$(ORIG_FILE)"
-NON_UP_LOC = non_upstream_patches
+NON_UP_DIR = /tmp/non_upstream_patches
 
 $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	# Obtaining the Debian kernel source
@@ -100,24 +100,25 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	stg repair
 	stg import -s ../patch/series
 
-	mkdir $(NON_UP_LOC)
+	rm -rf $(NON_UP_DIR)
+	mkdir -p $(NON_UP_DIR)
 
-	if [ ! -z ${EXTERNAL_KERNEL_PATCHES} ];  then
-		wget ${EXTERNAL_KERNEL_PATCHES} -O patches.tar
-		tar -xf patches.tar -C $(NON_UP_LOC)
+	if [ ! -z ${EXTERNAL_KERNEL_PATCH_URL} ];  then
+		wget ${EXTERNAL_KERNEL_PATCH_URL} -O patches.tar
+		tar -xf patches.tar -C $(NON_UP_DIR)
 	fi
 
 	# Precedence is given for external URL
-	if [ -z ${EXTERNAL_KERNEL_PATCHES} ] && [ x${INCLUDE_MLNX_PATCHES} == xy ]; then
-		if [ -f "$(MLNX_PATCH_LOC)" ]; then
-			tar -xf $(MLNX_PATCH_LOC) -C $(NON_UP_LOC)
+	if [ -z ${EXTERNAL_KERNEL_PATCH_URL} ] && [ x${INCLUDE_EXTERNAL_PATCH_TAR} == xy ]; then
+		if [ -f "$(EXTERNAL_KERNEL_PATCH_TAR)" ]; then
+			tar -xf $(EXTERNAL_KERNEL_PATCH_TAR) -C $(NON_UP_DIR)
 		fi
 	fi
 
-	if [ -f "$(NON_UP_LOC)/series" ]; then
+	if [ -f "$(NON_UP_DIR)/series" ]; then
 		echo "External Patches applied:"
-		cat $(NON_UP_LOC)/series
-		stg import -s $(NON_UP_LOC)/series
+		cat $(NON_UP_DIR)/series
+		stg import -s $(NON_UP_DIR)/series
 	fi
 
 	# Optionally add/remove kernel options
