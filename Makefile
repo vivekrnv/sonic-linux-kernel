@@ -104,7 +104,7 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	mkdir -p $(NON_UP_DIR)
 
 	if [ ! -z ${EXTERNAL_KERNEL_PATCH_URL} ];  then
-		wget ${EXTERNAL_KERNEL_PATCH_URL} -O patches.tar
+		wget $(EXTERNAL_KERNEL_PATCH_URL) -O patches.tar
 		tar -xf patches.tar -C $(NON_UP_DIR)
 	fi
 
