@@ -140,7 +140,7 @@ function process_inclusion_exclusion_files(){
 
         # Process any force inclusions in the kernel
         if [ -f ${force_inclusion_file} ]; then
-            force_inclusion_opts=$(get_section_opts ${force_inclusion_file} "common" ${ARCH} ${PLATFORM})
+            force_inclusion_opts=$(get_section_opts ${force_inclusion_file} "common" ${ARCH} ${PLATFORM} ${PLATFORM}-${ARCH})
             while read -r opt; do
                 if [ ! -z "$opt" ] && [[ ! "$opt" =~ ^#.* ]]; then
                     echo $opt >> ${CONFIG_FILE}
