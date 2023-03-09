@@ -75,7 +75,7 @@ function process_inclusion_exclusion_files(){
 
         # Process any exclusions in the kernel
         if [ -f ${exclusion_file} ]; then
-            exclusion_opts=$(get_section_opts ${exclusion_file} "common" ${ARCH} ${PLATFORM})
+            exclusion_opts=$(get_section_opts ${exclusion_file} "common" ${ARCH} ${PLATFORM} ${PLATFORM}-${ARCH})
             while read -r opt; do
                 if [ ! -z "$opt" ] && [[ ! "$opt" =~ ^#.* ]]; then
                     scripts/config --file ${CONFIG_FILE} -d $opt
@@ -85,7 +85,7 @@ function process_inclusion_exclusion_files(){
 
         # Process any inclusions in the kernel
         if [ -f ${inclusion_file} ]; then
-            inclusion_opts=$(get_section_opts ${inclusion_file} "common" ${ARCH} ${PLATFORM})
+            inclusion_opts=$(get_section_opts ${inclusion_file} "common" ${ARCH} ${PLATFORM} ${PLATFORM}-${ARCH})
             while read -r opt; do
                 if [ ! -z "$opt" ] && [[ ! "$opt" =~ ^#.* ]]; then
                     n=${opt%=*}
