@@ -62,8 +62,8 @@ kernel-compat-always-include-linux-compat.h-from-net-compat.patch
 #
 
 # Mellanox patches for 5.10
-### mellanox_sdk_start
-### mellanox_sdk_end
+### mellanox_sdk-start
+### mellanox_sdk-end
 
 ### mellanox_hw_mgmt-start
 0001-i2c-mlxcpld-Update-module-license.patch
