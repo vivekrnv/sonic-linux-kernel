@@ -1,7 +1,8 @@
 # Description: Add kconfig options that has to be included in the kernel
 # Note: Markers should start with "###"
-#       Header should end with .*-start eg: mellanox-start
-#       Footer must end with .*-end eg: mellanox-end
+#       Header should end with .*-start eg: any_description-start
+#       Footer must end with .*-end eg: any_description-end
+#       Markers should not be nested
 
 [common]
 CONFIG_LOG_BUF_SHIFT=20
