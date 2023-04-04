@@ -65,15 +65,14 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	rm -rf $(NON_UP_DIR)
 	mkdir -p $(NON_UP_DIR)
 
-	if [ ! -z ${EXTERNAL_KERNEL_PATCH_URL} ];  then
-		wget $(EXTERNAL_KERNEL_PATCH_URL) -O patches.tar
-		tar -xf patches.tar -C $(NON_UP_DIR)
-	fi
-
-	# Precedence is given for external URL
-	if [ -z ${EXTERNAL_KERNEL_PATCH_URL} ] && [ x${INCLUDE_EXTERNAL_PATCHES} == xy ]; then
-		if [ -d "$(EXTERNAL_KERNEL_PATCH_LOC)" ]; then
-			cp -r $(EXTERNAL_KERNEL_PATCH_LOC)/* $(NON_UP_DIR)/
+	if [ x${INCLUDE_EXTERNAL_PATCHES} == xy ]; then
+		if [ ! -z ${EXTERNAL_KERNEL_PATCH_URL} ]; then
+			wget $(EXTERNAL_KERNEL_PATCH_URL) -O patches.tar
+			tar -xf patches.tar -C $(NON_UP_DIR)
+		else
+			if [ -d "$(EXTERNAL_KERNEL_PATCH_LOC)" ]; then
+				cp -r $(EXTERNAL_KERNEL_PATCH_LOC)/* $(NON_UP_DIR)/
+			fi
 		fi
 	fi
 
