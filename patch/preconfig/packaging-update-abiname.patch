@@ -27,8 +27,8 @@ index b3ce4f58d..7d4eabf04 100644
  381bc892fd36ef7ea5327f649b99cb98  debian/templates/sourcebin.meta.maintscript.in
  814dda166c7e3ef02e6e259e805ac66a  debian/templates/tests-control.image.in
  33d71bfd398d2f9b3bc5c0193b67d17e  debian/templates/tests-control.main.in
--945d75b562c7af7dc41cfb629995242b  debian/config/defines
-+9a096348a7026717cedb57e79fe55a7d  debian/config/defines
+-a488ddf3e8386253351268ac9218622f  debian/config/defines
++4f47bd3f3f88986bd6cb2bd9c006d6aa  debian/config/defines
  59a811890d2e7129bec940075850f11f  debian/config/alpha/defines
  026ce5cdad7814c28f4fd87589786719  debian/config/amd64/defines
  44bff3917069a99eeb20ceff24609dda  debian/config/arm64/defines
