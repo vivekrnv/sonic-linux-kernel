@@ -6,14 +6,20 @@ CONFIG_CGROUP_NET_CLASSID
 CONFIG_NET_CLS_CGROUP
 CONFIG_NETFILTER_XT_MATCH_CGROUP
 CONFIG_CGROUP_NET_PRIO
+###-> mellanox_common-start
+###-> mellanox_common-end
 
 [amd64]
 # Unset X86_PAT according to Broadcom's requirement
 CONFIG_X86_PAT
 CONFIG_MLXSW_PCI
+###-> mellanox-start
+###-> mellanox-end
 
 [arm64]
 CONFIG_SQUASHFS_DECOMP_MULTI_PERCPU
+###-> mellanox_arm64-start
+###-> mellanox_arm64-end
 
 [marvell-arm64]
 CONFIG_UBIFS_FS_ZSTD
