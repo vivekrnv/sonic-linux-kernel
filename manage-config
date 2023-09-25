@@ -159,7 +159,7 @@ exclusion_file="../patch/kconfig-exclusions"
 inclusion_file="../patch/kconfig-inclusions"
 force_inclusion_file="../patch/kconfig-force-inclusions"
 ret_process_inc_ex=0
-log_process_inc_ex=$(mktemp -t /tmp/process_inc_ex_XXXX.log)
+log_process_inc_ex=$(mktemp -t process_inc_ex_log.XXXXX)
 ret_process_inc_ex=$(process_inclusion_exclusion_files > ${log_process_inc_ex}; echo $?)
 cat ${log_process_inc_ex}
 
