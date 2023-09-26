@@ -39,7 +39,7 @@ CONFIG_SENSORS_MAX31790=m
 # For optoe
 CONFIG_EEPROM_OPTOE=m
 
-###-> mellanox-start
+###-> mellanox_amd64-start
 CONFIG_OF=y
 CONFIG_THERMAL_OF=y
 CONFIG_CPU_THERMAL=y
@@ -140,7 +140,7 @@ CONFIG_I2C_I801=m
 CONFIG_PINCTRL=y
 CONFIG_PINCTRL_INTEL=y
 CONFIG_SPI_PXA2XX=m
-###-> mellanox-end
+###-> mellanox_amd64-end
 
 # For Cisco 8000
 CONFIG_PHYLIB=m
