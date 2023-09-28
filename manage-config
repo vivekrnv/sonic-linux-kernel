@@ -159,7 +159,9 @@ exclusion_file="../patch/kconfig-exclusions"
 inclusion_file="../patch/kconfig-inclusions"
 force_inclusion_file="../patch/kconfig-force-inclusions"
 ret_process_inc_ex=0
-ret_process_inc_ex=$(process_inclusion_exclusion_files > /dev/null; echo $?)
+log_process_inc_ex=$(mktemp -t process_inc_ex_log.XXXXX)
+ret_process_inc_ex=$(process_inclusion_exclusion_files > ${log_process_inc_ex}; echo $?)
+cat ${log_process_inc_ex}
 
 #  Secure Boot support
 if [ $ret_process_inc_ex -eq 0 ]; then
@@ -179,11 +181,13 @@ if [ $ret_process_inc_ex -eq 0 ]; then
         # save the new pub key in kernel
         sed -i "s|^CONFIG_SYSTEM_TRUSTED_KEYS=.*|CONFIG_SYSTEM_TRUSTED_KEYS=\"$SECURE_UPGRADE_SIGNING_CERT\"|g" ${inclusion_file}
 
-        ret_process_inc_ex=$(process_inclusion_exclusion_files > /dev/null; echo $?)
+        ret_process_inc_ex=$(process_inclusion_exclusion_files > ${log_process_inc_ex}; echo $?)
         echo "Secure Boot kernel configuration done."
+        cat ${log_process_inc_ex}
     else
         echo "no Secure Boot Kernel configuration required."
     fi
 fi
 
+rm -rf ${log_process_inc_ex}
 exit $ret_process_inc_ex
