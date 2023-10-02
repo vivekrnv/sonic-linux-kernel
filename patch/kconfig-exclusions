@@ -17,8 +17,6 @@ CONFIG_MLXSW_PCI
 ###-> mellanox_amd64-end
 
 [arm64]
-###-> mellanox_arm64-start
-###-> mellanox_arm64-end
 
 [marvell-arm64]
 CONFIG_UBIFS_FS_ZSTD
@@ -53,3 +51,5 @@ CONFIG_EFI
 CONFIG_LOCK_DOWN_KERNEL
 CONFIG_SECONDARY_TRUSTED_KEYRING
 CONFIG_SYSTEM_BLACKLIST_KEYRING
+
+[mellanox-arm64]
