@@ -3,6 +3,16 @@ From: Zhengfeng Dou <zhengfengd@nvidia.com>
 Date: Thu, 29 Jun 2023 12:15:19 +0800
 Subject: [PATCH] drop_monitor: Extend WJH buffer linux channel
 
+SDK WJH-Libs is using following information for shared buffer drops:
+* egress_port
+* tc
+* egress_port_valid
+* original_occupancy
+* original_latency
+* drop_reason.id
+
+The above metadata is missing when using linux channel (drop monitor).
+This patch is to add the extended information also for linux channel.
 ---
  include/net/devlink.h            |  18 +++++
  include/uapi/linux/net_dropmon.h |   5 ++
