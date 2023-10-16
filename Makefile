@@ -98,8 +98,8 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 	git commit -m "unmodified debian source"
 
 	# Learning new git repo head (above commit) by calling stg repair.
-	stg repair
-	stg import -s ../patch/series
+	#stg repair
+	#stg import -s ../patch/series
 
 	# Optionally add/remove kernel options
 	#if [ -f ../manage-config ]; then
