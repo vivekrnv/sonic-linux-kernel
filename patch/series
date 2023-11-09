@@ -68,8 +68,8 @@ driver-net-tg3-add-param-short-preamble-and-reset.patch
 
 # Mellanox patches for 5.10
 ###-> mellanox_sdk-start
-0003-psample-define-the-macro-PSAMPLE_MD_EXTENDED_ATTR.patch
-0004-drop_monitor-Extend-WJH-buffer-linux-channel.patch
+0001-psample-define-the-macro-PSAMPLE_MD_EXTENDED_ATTR.patch
+0002-drop_monitor-Extend-WJH-buffer-linux-channel.patch
 ###-> mellanox_sdk-end
 
 #TODO
