@@ -116,6 +116,7 @@ Support-for-fullcone-nat.patch
 0043-hwmon-mlxreg-fan-Extend-number-of-supporetd-fans.patch
 0051-platform-mellanox-mlxreg-hotplug-Allow-more-flexible.patch
 0052-i2c-mux-Add-register-map-based-mux-driver.patch
+0055-mellanox-Relocate-mlx-platform-driver.patch
 0056-Documentation-ABI-Add-new-attribute-for-mlxreg-io-sy.patch
 0057-Documentation-ABI-Add-new-attribute-for-mlxreg-io-sy.patch
 0061-pinctrl-Introduce-struct-pinfunction-and-PINCTRL_PIN.patch
@@ -123,6 +124,7 @@ Support-for-fullcone-nat.patch
 0063-gpio-mlxbf3-Add-gpio-driver-support.patch
 0064-pinctrl-mlxbf3-set-varaiable-mlxbf3_pmx_funcs-storag.patch
 0085-hwmon-mlxreg-fan-Separate-methods-of-fan-setting-com.patch
+0086-platform-mellanox-indicate-deferred-I2C-bus-creation.patch
 8003-mlxsw-i2c-SONIC-ISSU-Prevent-transaction-execution-f.patch
 8005-leds-leds-mlxreg-Downstream-Send-udev-event-from-led.patch
 8006-i2c-mlxcpld-Downstream-WA-to-avoid-error-for-SMBUS-r.patch
