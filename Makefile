@@ -88,6 +88,13 @@ $(addprefix $(DEST)/, $(MAIN_TARGET)): $(DEST)/% :
 		cp $(NON_UP_DIR)/patches/*.patch patch/
 	fi
 
+	# Include any platform specific patches
+	if [ -f "patch/$(CONFIGURED_PLATFORM)/platform-changes.patch" ]; then
+		cat patch/$(CONFIGURED_PLATFORM)/platform-changes.patch
+		git stash -- patch/
+		git apply patch/$(CONFIGURED_PLATFORM)/platform-changes.patch
+	fi
+
 	# Obtaining the Debian kernel source
 	rm -rf $(BUILD_DIR)
 	wget -O $(DSC_FILE) $(DSC_FILE_URL)
