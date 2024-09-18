@@ -162,7 +162,7 @@ kernel-compat-always-include-linux-compat.h-from-net-compat.patch
 0096-hwmon-mlxreg-fan-Modify-PWM-connectivity-validation.patch
 0097-hwmon-mlxreg-fan-Support-distinctive-names-per-diffe.patch
 0097-1-mlxsw-Use-u16-for-local_port-field.patch
-#0097-2-mlxsw-i2c-Fix-chunk-size-setting.patch
+0097-2-mlxsw-i2c-Fix-chunk-size-setting.patch
 0097-3-mlxsw-core_hwmon-Adjust-module-label-names.patch
 0152-mlxsw-i2c-Prevent-transaction-execution-for-spec.patch
 0157-platform-x86-mlx-platform-Make-activation-of-some-dr.patch
