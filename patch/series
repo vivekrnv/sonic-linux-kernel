@@ -153,6 +153,7 @@ Support-for-fullcone-nat.patch
 8009-hwmon-mlxsw-Downstream-Allow-fan-speed-setting-granu.patch
 8010-mlxsw-i2c-Downstream-Add-retry-mechanism-for-failed-.patch
 8011-mlxsw-minimal-Downstream-Disable-ethtool-interface.patch
+8012-hwmon-pmbus-Downstream-Workaround-for-psu-attributes.patch
 ###-> mellanox_hw_mgmt-end
 
 # Cisco patches for 5.10 kernel
